@@ -33,18 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    $wifi = $body['wifi_scan'] ?? null;
     $record = [
-        'ts'       => date('c'),
-        'device'   => $body['device']   ?? 'esp32',
-        'status'   => $body['status']   ?? null,
-        'message'  => $body['message']  ?? null,
-        'servo'    => isset($body['servo'])    ? (int)$body['servo']    : null,
-        'rssi'     => isset($body['rssi'])     ? (int)$body['rssi']     : null,
-        'ram'      => isset($body['ram'])      ? (int)$body['ram']      : null,
-        'ip'       => $body['ip']       ?? null,
-        'temp'     => isset($body['temp'])     ? (float)$body['temp']   : null,
-        'humidity' => isset($body['humidity']) ? (float)$body['humidity']: null,
-        'extra'    => $body['extra']    ?? null,
+        'ts'        => date('c'),
+        'device'    => $body['device']   ?? 'esp32',
+        'status'    => $body['status']   ?? null,
+        'message'   => $body['message']  ?? null,
+        'servo'     => isset($body['servo'])    ? (int)$body['servo']    : null,
+        'rssi'      => isset($body['rssi'])     ? (int)$body['rssi']     : null,
+        'ram'       => isset($body['ram'])      ? (int)$body['ram']      : null,
+        'ip'        => $body['ip']       ?? null,
+        'temp'      => isset($body['temp'])     ? (float)$body['temp']   : null,
+        'humidity'  => isset($body['humidity']) ? (float)$body['humidity']: null,
+        'wifi_scan' => (is_array($wifi) && count($wifi) > 0) ? $wifi : null,
+        'extra'     => $body['extra']    ?? null,
     ];
 
     $fp = fopen(DATA_FILE, 'c+');
