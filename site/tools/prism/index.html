@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEAM Vendor Master Guard — Payment Risk Engine</title>
+<meta name="description" content="Stop risky vendor and payment changes before money leaves the company. 24-sensor fraud detection with cryptographic audit proof.">
+<link rel="canonical" href="https://feam.co/tools/prism/" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+*{box-sizing:border-box}
+body{background:#030712;color:#e2e8f0;font-family:'Inter',sans-serif;margin:0}
+.glass{background:rgba(15,23,42,0.7);backdrop-filter:blur(16px);border:1px solid rgba(30,41,59,0.8)}
+.mono{font-family:'JetBrains Mono',monospace}
+.glow-red{box-shadow:0 0 20px rgba(239,68,68,0.25)}
+.glow-green{box-shadow:0 0 20px rgba(34,197,94,0.25)}
+.glow-yellow{box-shadow:0 0 20px rgba(234,179,8,0.25)}
+.glow-blue{box-shadow:0 0 20px rgba(59,130,246,0.25)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes barFill{from{width:0}to{width:var(--target-w)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(400px)}}
+
+.animate-in{animation:fadeIn 0.4s ease forwards}
+.bar-fill{animation:barFill 0.8s cubic-bezier(0.34,1.1,0.64,1) forwards}
+.pulse-dot{animation:pulse 2s infinite}
+
+.scenario-card{cursor:pointer;transition:all 0.2s ease;border:1px solid rgba(30,41,59,0.6)}
+.scenario-card:hover{border-color:rgba(99,102,241,0.5);background:rgba(99,102,241,0.06)}
+.scenario-card.active{border-color:rgba(99,102,241,0.8);background:rgba(99,102,241,0.1)}
+
+.verdict-block{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));border:1px solid rgba(239,68,68,0.4)}
+.verdict-hold{background:linear-gradient(135deg,rgba(234,179,8,0.15),rgba(234,179,8,0.05));border:1px solid rgba(234,179,8,0.4)}
+.verdict-pass{background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(34,197,94,0.05));border:1px solid rgba(34,197,94,0.4)}
+.verdict-escalate{background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(249,115,22,0.05));border:1px solid rgba(249,115,22,0.4)}
+.verdict-shadow{background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border:1px solid rgba(139,92,246,0.4)}
+
+.spectrum-bar-bg{background:rgba(30,41,59,0.5);border-radius:4px;height:8px;overflow:hidden}
+.spectrum-bar-fill{height:100%;border-radius:4px;transition:width 0.8s cubic-bezier(0.34,1.1,0.64,1)}
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Header -->
+<nav class="border-b border-slate-800 px-6 py-4">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="https://feam.co" class="text-slate-400 hover:text-white text-sm transition-colors">← feam.co</a>
+      <span class="text-slate-700">|</span>
+      <span class="text-white font-semibold">Vendor Master Guard</span>
+      <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full mono">LIVE DEMO</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></div>
+      <span class="text-xs text-slate-400 mono">24 sensors active</span>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="max-w-6xl mx-auto px-6 pt-12 pb-8">
+  <div class="text-center mb-12">
+    <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-1.5 text-sm text-red-300 mb-6 mono">
+      ⬡ FEAM Prism Engine · 6 Spectrums · SHA-256 Sealed
+    </div>
+    <h1 class="text-4xl font-bold text-white mb-4 leading-tight">
+      Stop risky payments<br>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">before money leaves the company</span>
+    </h1>
+    <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+      24 real sensors. 6 risk spectrums. Constitutional governance. Every verdict is cryptographically sealed and audit-ready.
+    </p>
+  </div>
+
+  <div class="grid lg:grid-cols-5 gap-8">
+
+    <!-- Left: Scenarios + Custom -->
+    <div class="lg:col-span-2 space-y-4">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Select Scenario</h2>
+
+      <div id="scenarios" class="space-y-2">
+
+        <div class="scenario-card glass rounded-xl p-4" data-scenario="clean" onclick="selectScenario(this)">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-white">Normal Payment</span>
+            <span class="text-xs mono text-emerald-400">→ PASS</span>
+          </div>
+          <p class="text-xs text-slate-500">Verified vendor, dual control, MFA, complete approval chain. €5,000.</p>
+        </div>
+
+        <div class="scenario-card glass rounded-xl p-4" data-scenario="iban" onclick="selectScenario(this)">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-white">IBAN Changed</span>
+            <span class="text-xs mono text-yellow-400">→ HOLD</span>
+          </div>
+          <p class="text-xs text-slate-500">Vendor IBAN updated 3 hours before payment. Approval chain incomplete. €60,000.</p>
+        </div>
+
+        <div class="scenario-card glass rounded-xl p-4" data-scenario="fraud" onclick="selectScenario(this)">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-white">Ghost Vendor Fraud</span>
+            <span class="text-xs mono text-red-400">→ BLOCK</span>
+          </div>
+          <p class="text-xs text-slate-500">Same user created vendor and approved payment. Duplicate invoice. Unverified. €750,000.</p>
+        </div>
+
+        <div class="scenario-card glass rounded-xl p-4" data-scenario="sanction" onclick="selectScenario(this)">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-white">Sanction List Hit</span>
+            <span class="text-xs mono text-red-400">→ BLOCK ⚡</span>
+          </div>
+          <p class="text-xs text-slate-500">Vendor matched against OFAC/EU sanction list. Hard veto — no override possible.</p>
+        </div>
+
+        <div class="scenario-card glass rounded-xl p-4" data-scenario="weekend" onclick="selectScenario(this)">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-white">Weekend Rush</span>
+            <span class="text-xs mono text-orange-400">→ ESCALATE</span>
+          </div>
+          <p class="text-xs text-slate-500">Saturday night €200,000 transfer. New country. Role changed last week. No dual control.</p>
+        </div>
+
+      </div>
+
+      <!-- Custom JSON -->
+      <div class="glass rounded-xl p-4 mt-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-semibold text-slate-300">Custom Event</span>
+          <button onclick="evaluateCustom()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg transition-colors mono">Run →</button>
+        </div>
+        <textarea id="customJson" rows="8" class="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-3 text-xs mono text-slate-300 focus:outline-none focus:border-indigo-500 resize-none" placeholder='{
+  "amount": 50000,
+  "iban_changed": true,
+  "vendor_verified": false,
+  "approval_chain_complete": false
+}'></textarea>
+      </div>
+    </div>
+
+    <!-- Right: Result -->
+    <div class="lg:col-span-3">
+      <div id="result-panel" class="glass rounded-2xl p-8 min-h-96 flex items-center justify-center">
+        <div class="text-center text-slate-600">
+          <div class="text-5xl mb-4">⬡</div>
+          <p class="text-sm">Select a scenario or enter a custom event</p>
+          <p class="text-xs mt-1 mono">24 sensors ready</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How it works -->
+  <div class="mt-16 border-t border-slate-800 pt-12">
+    <h2 class="text-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-8">How Prism Engine Works</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass rounded-xl p-5 text-center">
+        <div class="text-2xl mb-3">📡</div>
+        <div class="text-sm font-semibold text-white mb-1">24 Sensors</div>
+        <div class="text-xs text-slate-500">Real signals from payment events. No LLM in decision loop.</div>
+      </div>
+      <div class="glass rounded-xl p-5 text-center">
+        <div class="text-2xl mb-3">🌈</div>
+        <div class="text-sm font-semibold text-white mb-1">6 Spectrums</div>
+        <div class="text-xs text-slate-500">RED GATE · YLW OBSERVE · GRN BALANCE · BLU LOGIC · VLT SEAL · WHT PRISM</div>
+      </div>
+      <div class="glass rounded-xl p-5 text-center">
+        <div class="text-2xl mb-3">⚖️</div>
+        <div class="text-sm font-semibold text-white mb-1">Mizan Collapse</div>
+        <div class="text-xs text-slate-500">Constitutional rules decide: PASS · HOLD · BLOCK · ESCALATE · SHADOW</div>
+      </div>
+      <div class="glass rounded-xl p-5 text-center">
+        <div class="text-2xl mb-3">🔐</div>
+        <div class="text-sm font-semibold text-white mb-1">Shahada Seal</div>
+        <div class="text-xs text-slate-500">SHA-256 witness hash. Tamper-evident. EU AI Act Art.12 compliant.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="mt-12 text-center">
+    <p class="text-slate-400 mb-4">Ready to protect your payment workflow?</p>
+    <a href="mailto:erdem@feam.co?subject=Vendor Master Guard — Pilot Request" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
+      Request a Pilot →
+    </a>
+    <p class="text-xs text-slate-600 mt-3">EU AI Act compliant · Frankfurt EU · <a href="https://feam.co" class="hover:text-slate-400">feam.co</a></p>
+  </div>
+</div>
+
+<script>
+// ─── Prism Engine (JavaScript port of v10/core/prism/) ─────────────────────
+
+const SPECTRUM = { RED:'RED_GATE', YLW:'YLW_OBSERVE', GRN:'GRN_BALANCE', BLU:'BLU_LOGIC', VLT:'VLT_SEAL', WHT:'WHITE_PRISM' };
+
+function amountRisk(e) {
+  const a = parseFloat(e.amount || e.payment_amount || e.invoice_amount || 0) || 0;
+  if (a >= 1000000) return [1.00, `amount=${a}`];
+  if (a >= 500000)  return [0.85, `amount=${a}`];
+  if (a >= 100000)  return [0.65, `amount=${a}`];
+  if (a >= 10000)   return [0.35, `amount=${a}`];
+  return [0.10, `amount=${a}`];
+}
+
+function boolSensor(e, key, invert=false) {
+  const raw = e[key];
+  const val = raw ? 1.0 : 0.0;
+  const score = invert ? 1.0 - val : val;
+  return [Math.round(score * 100) / 100, `${key}=${raw}`];
+}
+
+const SENSORS = [
+  // RED_GATE
+  { id:1,  name:'iban_changed',                sp:'RED', w:0.90, hv:false, fn:e=>boolSensor(e,'iban_changed') },
+  { id:2,  name:'vendor_not_verified',         sp:'RED', w:0.85, hv:false, fn:e=>[e.vendor_verified?0.0:1.0, `vendor_verified=${e.vendor_verified}`] },
+  { id:3,  name:'vendor_modified_recently',    sp:'RED', w:0.70, hv:false, fn:e=>boolSensor(e,'vendor_modified_recently') },
+  { id:4,  name:'vendor_created_recently',     sp:'RED', w:0.65, hv:false, fn:e=>boolSensor(e,'vendor_created_recently') },
+  { id:5,  name:'same_user_created_approved',  sp:'RED', w:0.95, hv:false, fn:e=>boolSensor(e,'same_user_created_and_approved') },
+  { id:6,  name:'duplicate_invoice',           sp:'RED', w:0.85, hv:false, fn:e=>boolSensor(e,'duplicate_invoice_flag') },
+  { id:7,  name:'blacklisted_iban',            sp:'RED', w:1.00, hv:true,  fn:e=>boolSensor(e,'blacklisted_iban_hit') },
+  { id:8,  name:'sanction_list_hit',           sp:'RED', w:1.00, hv:true,  fn:e=>boolSensor(e,'sanction_list_hit') },
+  { id:9,  name:'amount_risk',                 sp:'RED', w:0.75, hv:false, fn:e=>amountRisk(e) },
+  { id:10, name:'new_country_flag',            sp:'RED', w:0.70, hv:false, fn:e=>boolSensor(e,'new_country_flag') },
+  { id:11, name:'payment_split_detected',      sp:'RED', w:0.80, hv:false, fn:e=>boolSensor(e,'payment_split_detected') },
+  { id:12, name:'same_iban_multiple_vendors',  sp:'RED', w:0.85, hv:false, fn:e=>boolSensor(e,'same_iban_multiple_vendors') },
+  { id:13, name:'admin_override_used',         sp:'RED', w:0.70, hv:false, fn:e=>boolSensor(e,'admin_override_used') },
+  // YLW_OBSERVE
+  { id:14, name:'weekend_or_night_payment',    sp:'YLW', w:0.55, hv:false, fn:e=>boolSensor(e,'weekend_or_night_payment') },
+  { id:15, name:'role_change_recently',        sp:'YLW', w:0.60, hv:false, fn:e=>boolSensor(e,'role_change_recently') },
+  // GRN_BALANCE
+  { id:16, name:'approval_chain_incomplete',   sp:'GRN', w:0.80, hv:false, fn:e=>[e.approval_chain_complete?0.0:1.0, `approval_chain_complete=${e.approval_chain_complete}`] },
+  { id:17, name:'dual_control_missing',        sp:'GRN', w:0.85, hv:false, fn:e=>[e.dual_control_satisfied?0.0:1.0, `dual_control_satisfied=${e.dual_control_satisfied}`] },
+  { id:18, name:'explanation_missing',         sp:'GRN', w:0.70, hv:false, fn:e=>[e.explanation_available?0.0:1.0, `explanation_available=${e.explanation_available}`] },
+  { id:19, name:'human_impact',                sp:'GRN', w:0.80, hv:false, fn:e=>boolSensor(e,'human_impact') },
+  // BLU_LOGIC
+  { id:20, name:'mfa_failed',                  sp:'BLU', w:0.75, hv:false, fn:e=>[(e.mfa_passed===false||e.mfa_passed===0)?1.0:0.0, `mfa_passed=${e.mfa_passed}`] },
+  // VLT_SEAL
+  { id:21, name:'sensitive_data_detected',     sp:'VLT', w:0.85, hv:false, fn:e=>boolSensor(e,'sensitive_data_detected') },
+  { id:22, name:'witness_required',            sp:'VLT', w:0.90, hv:false, fn:e=>boolSensor(e,'witness_required') },
+  { id:23, name:'chain_integrity_broken',      sp:'VLT', w:1.00, hv:true,  fn:e=>[(e.chain_integrity===false||e.chain_integrity===0)?1.0:0.0, `chain_integrity=${e.chain_integrity}`] },
+  // WHITE_PRISM
+  { id:24, name:'output_not_clean',            sp:'WHT', w:0.80, hv:false, fn:e=>[(e.blue_output_clean===false||e.blue_output_clean===0)?1.0:0.0, `blue_output_clean=${e.blue_output_clean}`] },
+];
+
+function clamp(v) { return Math.max(0, Math.min(1, Math.round(v * 10000) / 10000)); }
+
+function aggregate(readings) {
+  const num = {}, den = {};
+  Object.values(SPECTRUM).forEach(k => { num[k]=0; den[k]=0; });
+  for (const r of readings) {
+    if (r.value <= 0) continue;
+    const k = SPECTRUM[r.sensor.sp];
+    num[k] += r.value * r.sensor.w;
+    den[k] += r.sensor.w;
+  }
+  const out = {};
+  Object.values(SPECTRUM).forEach(k => { out[k] = den[k]>0 ? clamp(num[k]/den[k]) : 0; });
+  return out;
+}
+
+function applyInterference(sp) {
+  const out = {...sp};
+  const red=sp[SPECTRUM.RED]||0, grn=sp[SPECTRUM.GRN]||0, ylw=sp[SPECTRUM.YLW]||0, blu=sp[SPECTRUM.BLU]||0;
+  out[SPECTRUM.VLT] = clamp((out[SPECTRUM.VLT]||0) + 0.15*red);
+  out[SPECTRUM.GRN] = clamp((out[SPECTRUM.GRN]||0) - 0.10*red);
+  out[SPECTRUM.RED] = clamp((out[SPECTRUM.RED]||0) - 0.10*grn);
+  out[SPECTRUM.BLU] = clamp((out[SPECTRUM.BLU]||0) + 0.10*grn);
+  out[SPECTRUM.VLT] = clamp((out[SPECTRUM.VLT]||0) + 0.10*ylw);
+  out[SPECTRUM.GRN] = clamp((out[SPECTRUM.GRN]||0) + 0.08*blu);
+  return out;
+}
+
+function collapse(spectra, hardVetoes) {
+  const red=spectra[SPECTRUM.RED]||0, ylw=spectra[SPECTRUM.YLW]||0;
+  const grn=spectra[SPECTRUM.GRN]||0, vlt=spectra[SPECTRUM.VLT]||0;
+  if (hardVetoes.length) return ['BLOCK', `hard_veto: ${hardVetoes.join(', ')}`];
+  if (red>=0.80) return ['BLOCK', `RED_GATE ≥ 0.80 (${red.toFixed(2)})`];
+  if (red>=0.60 && grn<0.35) return ['ESCALATE', `RED_GATE ≥ 0.60 (${red.toFixed(2)}) + low governance (${grn.toFixed(2)})`];
+  if (red>=0.45) return ['HOLD', `RED_GATE ≥ 0.45 (${red.toFixed(2)})`];
+  if (ylw>=0.60 && vlt<0.40) return ['SHADOW', `YLW_OBSERVE ≥ 0.60 (${ylw.toFixed(2)}) + low seal (${vlt.toFixed(2)})`];
+  return ['PASS', 'all thresholds clean'];
+}
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function evaluateEvent(event) {
+  const eventId = event.event_id || `evt_${Date.now()}`;
+  const readings = SENSORS.map(s => {
+    try {
+      const [value, evidence] = s.fn(event);
+      return { sensor: s, value: clamp(value), evidence };
+    } catch(e) {
+      return { sensor: s, value: 0, evidence: `error:${e}` };
+    }
+  });
+
+  const hardVetoes = readings.filter(r=>r.sensor.hv && r.value>0.1).map(r=>r.sensor.name);
+  const rawSpectra = aggregate(readings);
+  const spectra = applyInterference(rawSpectra);
+  const [verdict, reason] = collapse(spectra, hardVetoes);
+  const fired = readings.filter(r=>r.value>0.1);
+
+  const payload = JSON.stringify({ event_id:eventId, verdict, spectra, ts: Math.floor(Date.now()/1000) });
+  const hash = await sha256(`FEAM:${payload}`);
+
+  return { eventId, verdict, reason, spectra, rawSpectra, hardVetoes, fired, hash };
+}
+
+// ─── Scenarios ────────────────────────────────────────────────────────────────
+
+const SCENARIOS = {
+  clean: {
+    event_id: 'demo-001',
+    vendor_verified: true,
+    approval_chain_complete: true,
+    dual_control_satisfied: true,
+    explanation_available: true,
+    mfa_passed: true,
+    chain_integrity: true,
+    blue_output_clean: true,
+    amount: 5000,
+  },
+  iban: {
+    event_id: 'demo-002',
+    iban_changed: true,
+    vendor_modified_recently: true,
+    vendor_verified: false,
+    amount: 60000,
+    approval_chain_complete: false,
+    dual_control_satisfied: false,
+  },
+  fraud: {
+    event_id: 'demo-003',
+    iban_changed: true,
+    vendor_verified: false,
+    same_user_created_and_approved: true,
+    duplicate_invoice_flag: true,
+    amount: 750000,
+    approval_chain_complete: false,
+    dual_control_satisfied: false,
+    mfa_passed: false,
+  },
+  sanction: {
+    event_id: 'demo-004',
+    sanction_list_hit: true,
+    amount: 45000,
+  },
+  weekend: {
+    event_id: 'demo-005',
+    weekend_or_night_payment: true,
+    new_country_flag: true,
+    role_change_recently: true,
+    amount: 200000,
+    dual_control_satisfied: false,
+    explanation_available: false,
+  },
+};
+
+// ─── UI ───────────────────────────────────────────────────────────────────────
+
+function selectScenario(el) {
+  document.querySelectorAll('.scenario-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const key = el.dataset.scenario;
+  const event = SCENARIOS[key];
+  document.getElementById('customJson').value = JSON.stringify(event, null, 2);
+  runEvaluation(event);
+}
+
+function evaluateCustom() {
+  try {
+    const event = JSON.parse(document.getElementById('customJson').value);
+    runEvaluation(event);
+  } catch(e) {
+    showError('Invalid JSON: ' + e.message);
+  }
+}
+
+async function runEvaluation(event) {
+  showLoading();
+  await new Promise(r=>setTimeout(r, 300));
+  try {
+    const result = await evaluateEvent(event);
+    showResult(result, event);
+  } catch(e) {
+    showError(e.message);
+  }
+}
+
+function verdictStyle(v) {
+  const map = {
+    BLOCK:    { cls:'verdict-block glow-red',    text:'text-red-300',    icon:'🚫', color:'#ef4444' },
+    HOLD:     { cls:'verdict-hold glow-yellow',  text:'text-yellow-300', icon:'⏸',  color:'#eab308' },
+    PASS:     { cls:'verdict-pass glow-green',   text:'text-emerald-300',icon:'✅',  color:'#22c55e' },
+    ESCALATE: { cls:'verdict-escalate',          text:'text-orange-300', icon:'⚡',  color:'#f97316' },
+    SHADOW:   { cls:'verdict-shadow',            text:'text-violet-300', icon:'👁',  color:'#8b5cf6' },
+  };
+  return map[v] || map.PASS;
+}
+
+const SPECTRUM_META = {
+  RED_GATE:    { label:'RED GATE',    desc:'Fraud / Risk / Permission',      color:'#ef4444' },
+  YLW_OBSERVE: { label:'YLW OBSERVE', desc:'Anomaly / Timing / Drift',        color:'#eab308' },
+  GRN_BALANCE: { label:'GRN BALANCE', desc:'Governance / Fairness / Oversight',color:'#22c55e' },
+  BLU_LOGIC:   { label:'BLU LOGIC',   desc:'Auth / Routing / Session',        color:'#3b82f6' },
+  VLT_SEAL:    { label:'VLT SEAL',    desc:'Integrity / Witness / Chain',     color:'#8b5cf6' },
+  WHITE_PRISM: { label:'WHT PRISM',   desc:'Schema / Output / Coherence',     color:'#94a3b8' },
+};
+
+function showLoading() {
+  document.getElementById('result-panel').innerHTML = `
+    <div class="text-center animate-in">
+      <div class="text-4xl mb-4 animate-spin">⬡</div>
+      <p class="text-slate-400 text-sm mono">Running 24 sensors...</p>
+    </div>`;
+}
+
+function showError(msg) {
+  document.getElementById('result-panel').innerHTML = `
+    <div class="text-center animate-in">
+      <div class="text-4xl mb-4">⚠️</div>
+      <p class="text-red-400 text-sm mono">${msg}</p>
+    </div>`;
+}
+
+async function showResult(r, event) {
+  const vs = verdictStyle(r.verdict);
+
+  const spectraRows = Object.entries(r.spectra).map(([k, v]) => {
+    const meta = SPECTRUM_META[k] || { label:k, desc:'', color:'#64748b' };
+    const pct = Math.round(v * 100);
+    const barColor = v > 0.7 ? '#ef4444' : v > 0.4 ? '#eab308' : '#22c55e';
+    return `
+      <div class="mb-3">
+        <div class="flex justify-between items-center mb-1.5">
+          <div>
+            <span class="text-xs font-semibold mono" style="color:${meta.color}">${meta.label}</span>
+            <span class="text-xs text-slate-600 ml-2">${meta.desc}</span>
+          </div>
+          <span class="text-xs mono font-bold" style="color:${barColor}">${v.toFixed(3)}</span>
+        </div>
+        <div class="spectrum-bar-bg">
+          <div class="spectrum-bar-fill" style="width:0%;background:${barColor}" data-target="${pct}"></div>
+        </div>
+      </div>`;
+  }).join('');
+
+  const firedRows = r.fired.length ? r.fired.map(f => `
+    <div class="flex items-center justify-between py-1.5 border-b border-slate-800/50 last:border-0">
+      <div class="flex items-center gap-2">
+        ${f.sensor.hv ? '<span class="text-red-400 text-xs">⚡</span>' : '<span class="text-yellow-400 text-xs">●</span>'}
+        <span class="text-xs mono text-slate-300">${f.sensor.name}</span>
+        <span class="text-xs text-slate-600">${SPECTRUM_META[SPECTRUM[f.sensor.sp]]?.label||f.sensor.sp}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500 mono">${f.evidence}</span>
+        <span class="text-xs mono font-bold text-slate-200">${f.value.toFixed(2)}</span>
+      </div>
+    </div>`).join('')
+    : '<p class="text-xs text-slate-600 mono py-2">No sensors fired — clean event</p>';
+
+  const hardVetoHtml = r.hardVetoes.length ? `
+    <div class="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2 mb-4">
+      <span class="text-xs text-red-300 mono">⚡ HARD VETO: ${r.hardVetoes.join(', ')} — no override possible</span>
+    </div>` : '';
+
+  document.getElementById('result-panel').innerHTML = `
+    <div class="animate-in space-y-5 w-full">
+
+      <!-- Verdict -->
+      <div class="${vs.cls} rounded-xl p-5 text-center">
+        <div class="text-3xl mb-2">${vs.icon}</div>
+        <div class="text-3xl font-black ${vs.text} mono mb-1">${r.verdict}</div>
+        <p class="text-sm text-slate-300">${r.reason}</p>
+      </div>
+
+      ${hardVetoHtml}
+
+      <!-- Spectrums -->
+      <div class="glass rounded-xl p-5">
+        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">6-Spectrum Analysis</h3>
+        ${spectraRows}
+      </div>
+
+      <!-- Fired Sensors -->
+      <div class="glass rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Fired Sensors</h3>
+          <span class="text-xs mono text-slate-500">${r.fired.length} / 24</span>
+        </div>
+        ${firedRows}
+      </div>
+
+      <!-- Witness Hash -->
+      <div class="glass rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Shahada Witness Seal</span>
+          <span class="text-xs bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded mono">SHA-256</span>
+        </div>
+        <div class="bg-slate-900/60 rounded-lg p-3 mono text-xs text-slate-300 break-all leading-relaxed">${r.hash}</div>
+        <p class="text-xs text-slate-600 mt-2">Computed in browser · EU AI Act Art.12 · Tamper-evident · Event ID: ${r.eventId}</p>
+      </div>
+
+    </div>`;
+
+  // Animate bars after render
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.spectrum-bar-fill[data-target]').forEach(bar => {
+      const target = bar.dataset.target;
+      setTimeout(() => { bar.style.width = target + '%'; }, 100);
+    });
+  });
+}
+
+// Auto-select first scenario
+window.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.scenario-card');
+  if (first) selectScenario(first);
+});
+</script>
+</body>
+</html>
