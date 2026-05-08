@@ -383,11 +383,49 @@ function evaluateCustom() {
   }
 }
 
+// v10 API endpoint — Render'a deploy sonrası aktif olur
+const API_ENDPOINT = 'https://feam-os-v10.onrender.com/api/v1/prism/evaluate';
+const API_KEY = 'feam-v10-secure-2026-prod';
+
+async function tryApiEvaluation(event) {
+  const resp = await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+    body: JSON.stringify({ event, seal: true }),
+    signal: AbortSignal.timeout(6000),
+  });
+  if (!resp.ok) throw new Error(`API ${resp.status}`);
+  const d = await resp.json();
+  return {
+    eventId:   d.event_id,
+    verdict:   d.verdict,
+    reason:    d.reason,
+    spectra:   d.spectra,
+    rawSpectra: d.spectra,
+    hardVetoes: d.hard_vetoes || [],
+    fired:     (d.sensors_fired || []).map(s => ({
+      sensor: { name: s.name, sp: Object.entries(SPECTRUM).find(([,v])=>v===s.spectrum)?.[0]||'RED', hv: s.hard_veto },
+      value: s.value, evidence: s.evidence,
+    })),
+    hash: d.witness_hash || '',
+    source: 'api',
+  };
+}
+
 async function runEvaluation(event) {
   showLoading();
-  await new Promise(r=>setTimeout(r, 300));
+  await new Promise(r=>setTimeout(r, 250));
   try {
+    // Önce gerçek API dene
+    try {
+      const result = await tryApiEvaluation(event);
+      showResult(result, event);
+      return;
+    } catch(_) {
+      // API ulaşılamıyor → browser engine fallback
+    }
     const result = await evaluateEvent(event);
+    result.source = 'browser';
     showResult(result, event);
   } catch(e) {
     showError(e.message);
@@ -505,7 +543,7 @@ async function showResult(r, event) {
           <span class="text-xs bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded mono">SHA-256</span>
         </div>
         <div class="bg-slate-900/60 rounded-lg p-3 mono text-xs text-slate-300 break-all leading-relaxed">${r.hash}</div>
-        <p class="text-xs text-slate-600 mt-2">Computed in browser · EU AI Act Art.12 · Tamper-evident · Event ID: ${r.eventId}</p>
+        <p class="text-xs text-slate-600 mt-2">${r.source === 'api' ? '🔗 Sealed by FEAM v10 API · WORM chain · EU AI Act Art.12' : 'Computed in browser · EU AI Act Art.12'} · Event ID: ${r.eventId}</p>
       </div>
 
     </div>`;
