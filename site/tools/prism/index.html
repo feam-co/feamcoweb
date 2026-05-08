@@ -383,16 +383,15 @@ function evaluateCustom() {
   }
 }
 
-// v10 API endpoint — Render'a deploy sonrası aktif olur
-const API_ENDPOINT = 'https://feam-os-v10.onrender.com/api/v1/prism/evaluate';
-const API_KEY = 'feam-v10-secure-2026-prod';
+// Public demo endpoint — auth yok, rate-limited, CORS feam.co
+const API_ENDPOINT = 'https://feam-os-v10.onrender.com/api/v1/prism/demo/evaluate';
 
 async function tryApiEvaluation(event) {
   const resp = await fetch(API_ENDPOINT, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
-    body: JSON.stringify({ event, seal: true }),
-    signal: AbortSignal.timeout(6000),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event }),
+    signal: AbortSignal.timeout(8000),
   });
   if (!resp.ok) throw new Error(`API ${resp.status}`);
   const d = await resp.json();
