@@ -406,7 +406,11 @@ async function tryApiEvaluation(event) {
       sensor: { name: s.name, sp: Object.entries(SPECTRUM).find(([,v])=>v===s.spectrum)?.[0]||'RED', hv: s.hard_veto },
       value: s.value, evidence: s.evidence,
     })),
-    hash: d.witness_hash || '',
+    hash:        d.witness_hash || '',
+    chain_index: d.chain_index,
+    block_hash:  d.block_hash,
+    prev_hash:   d.prev_hash,
+    sealed_at:   d.sealed_at,
     source: 'api',
   };
 }
@@ -535,14 +539,42 @@ async function showResult(r, event) {
         ${firedRows}
       </div>
 
-      <!-- Witness Hash -->
+      <!-- Witness Seal -->
       <div class="glass rounded-xl p-5">
-        <div class="flex items-center gap-2 mb-2">
+        <div class="flex items-center gap-2 mb-3">
           <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Shahada Witness Seal</span>
-          <span class="text-xs bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded mono">SHA-256</span>
+          ${r.source === 'api' && r.chain_index !== undefined
+            ? `<span class="text-xs bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded mono">WORM CHAIN #${r.chain_index}</span>`
+            : `<span class="text-xs bg-slate-700/50 text-slate-400 border border-slate-600/30 px-2 py-0.5 rounded mono">SHA-256 · Browser</span>`
+          }
         </div>
-        <div class="bg-slate-900/60 rounded-lg p-3 mono text-xs text-slate-300 break-all leading-relaxed">${r.hash}</div>
-        <p class="text-xs text-slate-600 mt-2">${r.source === 'api' ? '🔗 Sealed by FEAM v10 API · WORM chain · EU AI Act Art.12' : 'Computed in browser · EU AI Act Art.12'} · Event ID: ${r.eventId}</p>
+
+        ${r.source === 'api' && r.chain_index !== undefined ? `
+        <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+          <div class="bg-slate-900/60 rounded-lg p-2">
+            <div class="text-slate-500 mb-1">Chain Index</div>
+            <div class="mono text-violet-300 font-bold">#${r.chain_index}</div>
+          </div>
+          <div class="bg-slate-900/60 rounded-lg p-2">
+            <div class="text-slate-500 mb-1">Sealed At</div>
+            <div class="mono text-slate-300">${r.sealed_at ? r.sealed_at.replace('T',' ').slice(0,19) + ' UTC' : '—'}</div>
+          </div>
+          <div class="bg-slate-900/60 rounded-lg p-2 col-span-2">
+            <div class="text-slate-500 mb-1">Block Hash</div>
+            <div class="mono text-violet-200 break-all leading-relaxed text-xs">${r.block_hash || '—'}</div>
+          </div>
+          <div class="bg-slate-900/60 rounded-lg p-2 col-span-2">
+            <div class="text-slate-500 mb-1">Prev Hash (chain link)</div>
+            <div class="mono text-slate-500 break-all leading-relaxed text-xs">${r.prev_hash || '—'}</div>
+          </div>
+        </div>
+        <p class="text-xs text-violet-400/70">🔗 Written to WORM chain · EU AI Act Art.12 · Tamper-evident · Verifiable</p>
+        ` : `
+        <div class="bg-slate-900/60 rounded-lg p-3 mono text-xs text-slate-300 break-all leading-relaxed mb-2">${r.hash}</div>
+        <p class="text-xs text-slate-600">Computed in browser · Connect to FEAM v10 API for WORM chain proof</p>
+        `}
+
+        <p class="text-xs text-slate-700 mt-2">Event ID: ${r.eventId}</p>
       </div>
 
     </div>`;
