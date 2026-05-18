@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>FEAM Saha</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#000;--s1:rgba(28,28,30,.95);--s2:rgba(44,44,46,.7);
+  --border:rgba(255,255,255,.1);--border2:rgba(255,255,255,.06);
+  --text:#f5f5f7;--t2:rgba(245,245,247,.6);--t3:rgba(245,245,247,.3);
+  --blue:#2997ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;
+  --r:14px;--r2:10px;--r3:8px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  overflow:hidden;
+}
+/* ── Top bar ── */
+.topbar{
+  height:52px;background:rgba(18,18,20,.98);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:10px;
+  flex-shrink:0;
+}
+.logo{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.logo span{color:var(--blue)}
+.spacer{flex:1}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--t3);flex-shrink:0}
+.status-dot.online{background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-lbl{font-size:11px;color:var(--t2)}
+
+/* ── Chat area ── */
+.chat{
+  position:absolute;top:52px;bottom:60px;left:0;right:0;
+  overflow-y:auto;padding:14px 14px 0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.chat::-webkit-scrollbar{display:none}
+
+/* Messages */
+.msg{max-width:88%;padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.5;word-break:break-word}
+.msg-sys{background:var(--s1);border:1px solid var(--border);color:var(--t2);
+  align-self:flex-start;border-radius:6px 16px 16px 16px;font-size:13px}
+.msg-user{background:var(--blue);color:#fff;align-self:flex-end;
+  border-radius:16px 6px 16px 16px}
+.msg-ai{background:var(--s1);border:1px solid var(--border);color:var(--text);
+  align-self:flex-start;border-radius:6px 16px 16px 16px}
+.msg-err{background:rgba(255,69,58,.12);border:1px solid rgba(255,69,58,.25);
+  color:var(--red);align-self:flex-start;border-radius:6px 16px 16px 16px}
+.msg-time{font-size:10px;color:var(--t3);margin-top:4px;text-align:right}
+.msg-seal{font-size:10px;color:var(--green);margin-top:3px;font-family:monospace}
+
+/* Quick actions */
+.quick-wrap{display:flex;flex-wrap:wrap;gap:7px;padding:4px 0 6px}
+.quick-btn{
+  padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1px solid var(--border);color:var(--t2);background:var(--s2);
+  cursor:pointer;transition:all .15s;font-family:inherit;
+}
+.quick-btn:active{background:rgba(41,151,255,.2);border-color:var(--blue);color:var(--blue)}
+
+/* Spinner */
+.typing{display:flex;align-items:center;gap:4px;padding:10px 13px;
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:6px 16px 16px 16px;align-self:flex-start;
+}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--t3);
+  animation:bounce .9s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* Data card inside message */
+.data-card{background:rgba(0,0,0,.4);border:1px solid var(--border2);
+  border-radius:var(--r3);padding:10px 12px;margin-top:8px;font-size:12px;
+  line-height:1.6;color:var(--t2);}
+.data-row{display:flex;justify-content:space-between;align-items:center;
+  padding:4px 0;border-bottom:1px solid var(--border2)}
+.data-row:last-child{border-bottom:none}
+.data-key{color:var(--t3);font-size:11px}
+.data-val{font-weight:600;color:var(--text);font-size:12px}
+.badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.b-green{background:rgba(48,209,88,.15);color:var(--green)}
+.b-orange{background:rgba(255,159,10,.15);color:var(--orange)}
+.b-red{background:rgba(255,69,58,.15);color:var(--red)}
+.b-blue{background:rgba(41,151,255,.15);color:var(--blue)}
+
+/* ── Input bar ── */
+.input-bar{
+  position:fixed;bottom:0;left:0;right:0;height:60px;
+  background:rgba(18,18,20,.98);border-top:1px solid var(--border);
+  display:flex;align-items:center;padding:0 12px;gap:8px;
+}
+.inp{
+  flex:1;background:rgba(255,255,255,.07);border:1px solid var(--border);
+  border-radius:22px;padding:9px 16px;color:var(--text);
+  font-family:inherit;font-size:14px;outline:none;
+}
+.inp:focus{border-color:var(--blue)}
+.inp::placeholder{color:var(--t3)}
+.send{
+  width:40px;height:40px;border-radius:50%;background:var(--blue);
+  border:none;color:#fff;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background .15s;
+}
+.send:active{background:#1a8aff}
+.send:disabled{background:rgba(41,151,255,.3);cursor:not-allowed}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">FEAM <span>Saha</span></div>
+  <div class="spacer"></div>
+  <div class="status-dot" id="sdot"></div>
+  <div class="status-lbl" id="slbl">bağlanıyor…</div>
+</div>
+
+<div class="chat" id="chat"></div>
+
+<div class="input-bar">
+  <input class="inp" id="inp" type="text" placeholder="Komut veya soru yaz…" autocomplete="off">
+  <button class="send" id="sendbtn" onclick="sendMessage()">↑</button>
+</div>
+
+<script>
+const RELAY  = 'https://hakikatmekanigi.com/feam/relay.php';
+const RKEY   = 'feam-relay-2026';
+const POLL_MS = 2500;
+
+let busy = false;
+
+// ── Helpers ──────────────────────────────────────────────────────
+const chat = document.getElementById('chat');
+function scrollBottom(){ chat.scrollTop = chat.scrollHeight; }
+function now(){ return new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}); }
+
+function addMsg(type, html, meta){
+  const wrap = document.createElement('div');
+  wrap.style.display = 'flex';
+  wrap.style.flexDirection = 'column';
+  wrap.style.alignItems = type === 'msg-user' ? 'flex-end' : 'flex-start';
+  const m = document.createElement('div');
+  m.className = `msg ${type}`;
+  m.innerHTML = html;
+  if(meta){ const t=document.createElement('div'); t.className='msg-time'; t.textContent=meta; wrap.appendChild(t);}
+  wrap.insertBefore(m, wrap.firstChild);
+  if(meta){ wrap.appendChild(wrap.children[1]); }
+  chat.appendChild(wrap);
+  scrollBottom();
+  return m;
+}
+
+function addTyping(){
+  const w = document.createElement('div');
+  w.id = 'typing';
+  w.style.cssText='display:flex;flex-direction:column;align-items:flex-start';
+  w.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  chat.appendChild(w); scrollBottom(); return w;
+}
+
+// ── Format API data nicely ───────────────────────────────────────
+function formatData(cmd, data){
+  if(!data) return '<i style="color:var(--t3)">Veri yok</i>';
+
+  if(cmd === 'copilot.ask'){
+    return `<div style="white-space:pre-wrap;line-height:1.6">${esc(data.output || '—')}</div>
+      ${data.seal ? `<div class="msg-seal">🔐 ${esc(data.seal)}</div>` : ''}`;
+  }
+
+  if(cmd === 'status.get'){
+    const rows = [
+      ['Durum', data.status ?? '—'],
+      ['Ajan Sayısı', data.agent_count ?? data.agents ?? '—'],
+      ['Versiyon', data.version ?? '—'],
+    ].filter(r => r[1] !== '—');
+    return card(rows);
+  }
+  if(cmd === 'invoice.stats'){
+    return card([
+      ['Toplam Fatura', data.total ?? '—'],
+      ['Ödendi',        fmt(data.paid_amount)],
+      ['Bekleyen',      fmt(data.pending_amount)],
+      ['Bu Ay',         fmt(data.this_month)],
+    ]);
+  }
+  if(cmd === 'risk.summary'){
+    return card([
+      ['Risk Seviyesi', data.risk_level ?? data.level ?? '—'],
+      ['Bekleyen Onay', data.pending_approvals ?? '—'],
+      ['Aktif Uyarı',   data.active_alerts ?? '—'],
+    ]);
+  }
+  if(cmd === 'approval.list'){
+    const items = Array.isArray(data) ? data : (data.items ?? data.queue ?? []);
+    if(!items.length) return '<span style="color:var(--t3)">Bekleyen onay yok</span>';
+    return items.slice(0,5).map(i =>
+      `<div class="data-card" style="margin-top:6px">
+        <div style="font-weight:700;margin-bottom:4px">${esc(i.title??i.type??'Onay')}</div>
+        <div style="font-size:12px;color:var(--t2)">${esc(i.description??i.desc??'')}</div>
+      </div>`
+    ).join('');
+  }
+  if(cmd === 'project.summary'){
+    const items = Array.isArray(data) ? data : (data.projects ?? []);
+    if(!items.length) return '<span style="color:var(--t3)">Proje bulunamadı</span>';
+    return items.slice(0,4).map(p =>
+      `<div class="data-card" style="margin-top:6px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700">${esc(p.name??p.title??'—')}</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:2px">${esc(p.client??p.customer??'')}</div>
+        </div>
+        <span class="badge b-blue">${esc(p.status??'—')}</span>
+      </div>`
+    ).join('');
+  }
+  if(cmd === 'shahada.recent'){
+    const blocks = Array.isArray(data) ? data : (data.blocks ?? data.chain ?? []);
+    if(!blocks.length) return '<span style="color:var(--t3)">Zincir boş</span>';
+    return blocks.slice(0,3).map(b =>
+      `<div class="data-card" style="margin-top:6px">
+        <div style="display:flex;justify-content:space-between">
+          <span style="font-weight:700;font-size:12px">#${b.index??'—'} ${esc(b.event_type??b.type??'')}</span>
+          <span style="font-size:10px;color:var(--t3)">${b.timestamp?new Date(b.timestamp).toLocaleTimeString('tr-TR'):''}</span>
+        </div>
+        <div style="font-size:11px;color:var(--t3);font-family:monospace;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((b.hash??'').substring(0,20)+'…')}</div>
+      </div>`
+    ).join('');
+  }
+  // fallback: JSON özet
+  const s = JSON.stringify(data, null, 2);
+  return `<pre style="font-size:11px;color:var(--t2);white-space:pre-wrap;max-height:200px;overflow-y:auto">${esc(s.substring(0,600))}${s.length>600?'\n…':''}</pre>`;
+}
+
+function card(rows){
+  return `<div class="data-card">${rows.map(([k,v])=>`
+    <div class="data-row"><span class="data-key">${esc(k)}</span><span class="data-val">${esc(String(v))}</span></div>
+  `).join('')}</div>`;
+}
+function fmt(v){ return v != null ? new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(v) : '—'; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Command detection ────────────────────────────────────────────
+const QUICK_MAP = {
+  'durum':     {cmd:'status.get',    label:'Sistem Durumu'},
+  'risk':      {cmd:'risk.summary',  label:'Risk Özeti'},
+  'onay':      {cmd:'approval.list', label:'Onay Listesi'},
+  'fatura':    {cmd:'invoice.stats', label:'Fatura İstatistikleri'},
+  'proje':     {cmd:'project.summary',label:'Proje Özeti'},
+  'zincir':    {cmd:'shahada.recent',label:'Son Bloklar'},
+};
+
+function detectCmd(text){
+  const t = text.toLowerCase().trim();
+  for(const [kw, val] of Object.entries(QUICK_MAP)){
+    if(t.includes(kw)) return val;
+  }
+  // Varsayılan: copilot
+  return {cmd:'copilot.ask', label:'Copilot', payload:{prompt: text}};
+}
+
+// ── Send ─────────────────────────────────────────────────────────
+async function sendMessage(preset){
+  if(busy) return;
+  const inp = document.getElementById('inp');
+  const text = preset ?? inp.value.trim();
+  if(!text) return;
+  if(!preset) inp.value = '';
+
+  busy = true;
+  document.getElementById('sendbtn').disabled = true;
+
+  addMsg('msg-user', esc(text), now());
+
+  const {cmd, label, payload} = detectCmd(text);
+  const typingEl = addTyping();
+
+  try {
+    // Komutu relay'e gönder
+    const r1 = await fetch(`${RELAY}?action=command`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','X-API-Key':RKEY},
+      body: JSON.stringify({cmd, payload: payload ?? null}),
+    });
+    const d1 = await r1.json();
+    if(!d1.ok){ throw new Error(d1.error ?? 'Relay hatası'); }
+    const sid = d1.session_id;
+
+    // Sonucu bekle (poll)
+    const result = await pollResult(sid);
+    typingEl.remove();
+
+    if(result.ok){
+      const html = formatData(cmd, result.data);
+      addMsg('msg-ai', `<div style="font-size:11px;color:var(--t3);margin-bottom:6px">${esc(label)}</div>${html}`, now());
+    } else {
+      addMsg('msg-err', `⚠ ${esc(result.error ?? 'Bilinmeyen hata')}`, now());
+    }
+
+  } catch(e){
+    typingEl?.remove();
+    addMsg('msg-err', `⚠ ${esc(e.message)}`, now());
+  }
+
+  busy = false;
+  document.getElementById('sendbtn').disabled = false;
+}
+
+async function pollResult(sid, maxWait=45000){
+  const start = Date.now();
+  while(Date.now() - start < maxWait){
+    await sleep(POLL_MS);
+    try {
+      const r = await fetch(`${RELAY}?action=result&session_id=${sid}`,{
+        headers:{'X-API-Key':RKEY}
+      });
+      const d = await r.json();
+      if(d.session_id) return d; // sonuç geldi
+    } catch {}
+  }
+  throw new Error('Yanıt zaman aşımı (45s)');
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// ── Status check ─────────────────────────────────────────────────
+async function checkStatus(){
+  try {
+    const r = await fetch(`${RELAY}?action=status`, {signal: AbortSignal.timeout(5000)});
+    const d = await r.json();
+    const online = d.relay === 'online';
+    document.getElementById('sdot').className = 'status-dot' + (online ? ' online' : '');
+    document.getElementById('slbl').textContent = online
+      ? `Çevrimiçi · ${d.pending_commands??0} bekleyen`
+      : 'Bağlantı yok';
+  } catch {
+    document.getElementById('slbl').textContent = 'Relay ulaşılamıyor';
+  }
+}
+
+// ── Boot ─────────────────────────────────────────────────────────
+document.getElementById('inp').addEventListener('keydown', e => {
+  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+});
+
+// Karşılama
+addMsg('msg-sys',
+  `Selam Patron 👋 FEAM Saha bağlandı.<br>
+  <div class="quick-wrap">
+    <button class="quick-btn" onclick="sendMessage('durum')">⬡ Durum</button>
+    <button class="quick-btn" onclick="sendMessage('risk')">⚠ Risk</button>
+    <button class="quick-btn" onclick="sendMessage('fatura')">◑ Fatura</button>
+    <button class="quick-btn" onclick="sendMessage('onay')">✓ Onaylar</button>
+    <button class="quick-btn" onclick="sendMessage('proje')">◧ Projeler</button>
+    <button class="quick-btn" onclick="sendMessage('zincir')">⛓ Zincir</button>
+  </div>`
+);
+
+checkStatus();
+setInterval(checkStatus, 30000);
+</script>
+</body>
+</html>
