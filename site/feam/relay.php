@@ -27,7 +27,8 @@ $action = $_GET['action'] ?? '';
 
 $ALLOWED_CMDS = [
     'status.get', 'risk.summary', 'approval.list',
-    'invoice.stats', 'project.summary', 'shahada.recent', 'copilot.ask',
+    'invoice.stats', 'project.summary', 'shahada.recent',
+    'copilot.ask', 'workspace.run',
 ];
 
 // ── Yardımcılar ──────────────────────────────────────────────────
