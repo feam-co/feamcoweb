@@ -162,7 +162,7 @@ function addTyping(){
   const w = document.createElement('div');
   w.id = 'typing';
   w.style.cssText='display:flex;flex-direction:column;align-items:flex-start';
-  w.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  w.innerHTML = '<div class="typing"><span></span><span></span><span></span><span id="typing-sec" style="font-size:10px;color:var(--t3);margin-left:6px;font-family:monospace">0s</span></div>';
   chat.appendChild(w); scrollBottom(); return w;
 }
 
@@ -313,19 +313,25 @@ async function sendMessage(preset){
   document.getElementById('sendbtn').disabled = false;
 }
 
-async function pollResult(sid, maxWait=45000){
+async function pollResult(sid, maxWait=180000){
   const start = Date.now();
   while(Date.now() - start < maxWait){
     await sleep(POLL_MS);
+    // Geçen süreyi typing animasyonunun yanında göster
+    const sec = Math.round((Date.now()-start)/1000);
+    const tEl = document.querySelector('#typing .typing');
+    if(tEl) tEl.title = `${sec}s`;
+    const lbl = document.getElementById('typing-sec');
+    if(lbl) lbl.textContent = `${sec}s`;
     try {
       const r = await fetch(`${RELAY}?action=result&session_id=${sid}`,{
         headers:{'X-API-Key':RKEY}
       });
       const d = await r.json();
-      if(d.session_id) return d; // sonuç geldi
+      if(d.session_id) return d;
     } catch {}
   }
-  throw new Error('Yanıt zaman aşımı (45s)');
+  throw new Error('Yanıt zaman aşımı (3 dakika) — FEAM lokal çalışıyor mu?');
 }
 
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
