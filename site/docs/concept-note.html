@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VeriCore — Concept Note v1.1 | CL4-2026</title>
+<meta name="description" content="VeriCore Concept Note — Cryptographic Audit & Compliance Layer for Trustworthy AI. Horizon Europe CL4-2026.">
+<link rel="canonical" href="https://feam.co/docs/concept-note.html" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script>
+<style>
+@page { size: A4; margin: 20mm 25mm; }
+@media print {
+  body { font-size: 10pt; }
+  .page-break { page-break-before: always; }
+  .no-print { display: none !important; }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; line-height: 1.7; background: #fff; }
+#pdf-content { max-width: 210mm; margin: 0 auto; padding: 40px; }
+h1 { font-size: 28px; font-weight: 800; color: #0d0d12; margin-bottom: 8px; letter-spacing: -0.5px; }
+h2 { font-size: 18px; font-weight: 700; color: #1a1a2e; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #7c5cfc; }
+h3 { font-size: 14px; font-weight: 700; color: #333; margin: 20px 0 8px; }
+p, li { font-size: 13px; margin-bottom: 8px; }
+ul { padding-left: 20px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+th { background: #f0ecff; color: #333; font-weight: 700; text-align: left; padding: 8px 12px; border: 1px solid #ddd; }
+td { padding: 8px 12px; border: 1px solid #ddd; }
+.header { text-align: center; padding: 24px 0; border-bottom: 3px solid #7c5cfc; margin-bottom: 24px; }
+.header .sub { font-size: 14px; color: #666; font-weight: 500; margin-top: 4px; }
+.header .badge { display: inline-block; background: #7c5cfc; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; margin-top: 12px; letter-spacing: 0.5px; }
+.meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8f8fc; border: 1px solid #e8e8f0; border-radius: 8px; padding: 16px; margin: 16px 0; font-size: 12px; }
+.meta .label { color: #888; font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+.meta .value { color: #1a1a2e; font-weight: 600; }
+.highlight { background: #f0ecff; border-left: 4px solid #7c5cfc; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 13px; }
+.pipeline { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
+.pipeline .step { background: #f0ecff; border: 1px solid #d0c8ff; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.pipeline .arrow { color: #7c5cfc; font-weight: bold; }
+.footer-doc { text-align: center; color: #999; font-size: 11px; margin-top: 40px; padding-top: 16px; border-top: 1px solid #eee; }
+
+/* Download button */
+.dl-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(3,7,18,0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(124,92,252,0.3); padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 16px; z-index: 100; }
+.dl-bar .info { color: #94a3b8; font-size: 13px; }
+.dl-bar .info strong { color: #f1f5f9; }
+.btn-dl { background: linear-gradient(135deg, #7c5cfc, #6a4ae8); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; font-family: 'Inter', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.btn-dl:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,92,252,0.4); }
+.btn-dl:active { transform: scale(0.97); }
+.btn-dl.loading { opacity: 0.7; pointer-events: none; }
+.btn-dl .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+.btn-dl.loading .spinner { display: block; }
+.btn-dl.loading .dl-icon { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: #7c5cfc; text-decoration: none; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="dl-bar no-print">
+  <span class="info"><strong>VeriCore Concept Note v1.1</strong> — CL4-2026</span>
+  <button class="btn-dl" id="btnDownload" onclick="downloadPDF()">
+    <span class="dl-icon">📄</span>
+    <span class="spinner"></span>
+    Download PDF
+  </button>
+</div>
+
+<div id="pdf-content">
+  <a href="/docs/" class="back-link no-print">← Back to Docs</a>
+
+  <div class="header">
+    <h1>VeriCore — Concept Note</h1>
+    <div class="sub">Cryptographic Audit & Compliance Layer for Trustworthy AI</div>
+    <div class="badge">HORIZON EUROPE — CL4-2026</div>
+  </div>
+
+  <div class="meta">
+    <div><span class="label">Version</span><br><span class="value">1.1 — April 2026</span></div>
+    <div><span class="label">Technology Owner</span><br><span class="value">FEAM.co / 5E Yapı Sistemleri Ltd.</span></div>
+    <div><span class="label">Founder & Architect</span><br><span class="value">Erdem Özcan</span></div>
+    <div><span class="label">Trademark</span><br><span class="value">TR 2024 121973 (Nice Class 42)</span></div>
+    <div><span class="label">TRL</span><br><span class="value">4 (Validated Prototype)</span></div>
+    <div><span class="label">Target TRL</span><br><span class="value">7 (System Prototype in Operational Environment)</span></div>
+    <div><span class="label">Location</span><br><span class="value">Teknopark İstanbul, Türkiye</span></div>
+    <div><span class="label">Contact</span><br><span class="value">erdem@feam.co | https://feam.co</span></div>
+  </div>
+
+  <h2>1. Problem Statement</h2>
+
+  <p>The EU AI Act (Regulation 2024/1689) mandates that all high-risk AI systems provide <strong>real-time logging, human oversight, and auditable decision records</strong> (Articles 12, 14). Non-compliance penalties reach <strong>€35 million or 7% of global annual turnover</strong>.</p>
+
+  <p>Current AI governance solutions rely on mutable logs and "trust-based" assertions. <strong>No commercially available system provides real-time, cryptographically provable audit trails for AI decisions.</strong> This gap becomes critical on <strong>August 2, 2026</strong>, when compliance obligations for high-risk AI systems take full effect.</p>
+
+  <div class="highlight">
+    <strong>Core Insight:</strong> Regulators demand auditable AI. The market has no working product that provides <em>cryptographic proof</em> rather than <em>trust-based logs</em>.
+  </div>
+
+  <h2>2. Proposed Solution: VeriCore</h2>
+
+  <p>VeriCore is a <strong>cryptographic compliance layer</strong> that sits between any AI system and its real-world actions. It intercepts AI decisions, enforces deterministic safety rules, and seals every action in an immutable SHA-256 Witness Chain.</p>
+
+  <h3>2.1 Core Principle</h3>
+  <p><strong>"Rules are the law. AI is the advisor."</strong> — In VeriCore's architecture, the LLM provides recommendations but <em>never</em> makes binding decisions. A deterministic rule engine serves as the final arbiter.</p>
+
+  <h3>2.2 Four Pillars</h3>
+  <table>
+    <tr><th>Pillar</th><th>Function</th><th>Technical Basis</th></tr>
+    <tr><td><strong>Deterministic Rule Engine</strong></td><td>Enforces hard gates (PII detection, budget limits, safety thresholds) before any AI action can execute</td><td>Python rule engine with configurable thresholds (SSOT)</td></tr>
+    <tr><td><strong>LLM Governance Wall</strong></td><td>Constrains AI to advisory role only; prevents autonomous action</td><td>Structured prompt architecture + output validation</td></tr>
+    <tr><td><strong>E_HAT Witness Chain</strong></td><td>Seals every decision with SHA-256 hash linked to previous block — creating tamper-evident, append-only audit trail</td><td>WORM (Write Once Read Many) chain with ECDSA P-256 signatures</td></tr>
+    <tr><td><strong>Human Oversight Loop</strong></td><td>Routes grey-zone decisions to human operators; records overrides in same chain</td><td>Configurable escalation thresholds + Sigma scoring</td></tr>
+  </table>
+
+  <h3>2.3 Decision Pipeline</h3>
+  <div class="pipeline">
+    <span class="step">AI Proposes</span><span class="arrow">→</span>
+    <span class="step">Hard Gates</span><span class="arrow">→</span>
+    <span class="step">Sigma Score</span><span class="arrow">→</span>
+    <span class="step">Verdict</span><span class="arrow">→</span>
+    <span class="step">Witness Seal</span>
+  </div>
+  <p>Each stage produces auditable metadata. The full pipeline executes in <strong>&lt;500ms</strong> including LLM advisory consultation.</p>
+
+  <div class="page-break"></div>
+
+  <h2>3. Technical Readiness (TRL 4)</h2>
+
+  <h3>3.1 What Has Been Built</h3>
+  <ul>
+    <li><strong>Working prototype</strong> with 210+ API endpoints, validated end-to-end decision pipeline</li>
+    <li><strong>Deterministic rule engine</strong> with 8 hard gates and 5-axis Sigma scoring system</li>
+    <li><strong>Witness Chain</strong> — append-only SHA-256 hash chain with ECDSA P-256 digital signatures</li>
+    <li><strong>Multi-agent system</strong> — 10 specialized agents (Scout, Quality, Finance, Risk, Governor, Coder, Legal, Ethics, Energy, Arbiter)</li>
+    <li><strong>LLM fallback chain</strong> — Ollama (local) → Gemini → Kimi (3-provider resilience)</li>
+    <li><strong>Interactive demo</strong> — Live at <a href="https://feam.co/demo/">feam.co/demo/</a></li>
+  </ul>
+
+  <h3>3.2 Validated Test Scenarios</h3>
+  <table>
+    <tr><th>Test</th><th>Scenario</th><th>Expected</th><th>Result</th></tr>
+    <tr><td>TEST-001</td><td>Fix README typo (safe)</td><td>APPROVED</td><td style="color:green">✅ DONE</td></tr>
+    <tr><td>TEST-002</td><td>Increase DB pool limits (safe)</td><td>APPROVED</td><td style="color:green">✅ DONE</td></tr>
+    <tr><td>TEST-003</td><td>Delete customer transaction logs + PII (dangerous)</td><td>REJECTED</td><td style="color:red">🔴 REJECTED</td></tr>
+  </table>
+  <p>TEST-003 demonstrates the constitutional wall: the hard gate detects PII/data deletion intent and <strong>instantly rejects</strong> without consulting the LLM, returning HTTP 422.</p>
+
+  <h2>4. EU AI Act Alignment</h2>
+  <table>
+    <tr><th>Article</th><th>Requirement</th><th>VeriCore Implementation</th></tr>
+    <tr><td>Art. 9</td><td>Risk Management System</td><td>5-axis Sigma scoring with configurable thresholds</td></tr>
+    <tr><td>Art. 12</td><td>Record-keeping / Logging</td><td>WORM Witness Chain — every decision immutably recorded</td></tr>
+    <tr><td>Art. 14</td><td>Human Oversight</td><td>Structured escalation loop with override recording</td></tr>
+    <tr><td>Art. 15</td><td>Accuracy, Robustness, Cybersecurity</td><td>Deterministic engine (no probabilistic drift), ECDSA signatures</td></tr>
+  </table>
+
+  <h2>5. Target Application Domain</h2>
+  <p><strong>Smart Building Energy Management Systems (BEMS)</strong> — where AI controls HVAC, lighting, and energy distribution in critical infrastructure. Regulatory pressure is highest here, and the consequences of unaudited AI decisions include safety risks, energy waste, and regulatory non-compliance.</p>
+
+  <h2>6. Proposed Consortium Structure</h2>
+  <table>
+    <tr><th>WP</th><th>Role</th><th>Proposed Partner</th><th>Contribution</th></tr>
+    <tr><td>WP1</td><td>Project Management</td><td>FEAM.co (TR)</td><td>Coordination, reporting, ethics</td></tr>
+    <tr><td>WP2</td><td>Technology Owner (IP)</td><td>FEAM.co / 5E Yapı Ltd. (TR)</td><td>VeriCore core engine, rule system, witness chain</td></tr>
+    <tr><td>WP3</td><td>Cryptographic Security</td><td><strong>Open — Fraunhofer AISEC (target)</strong></td><td>Post-quantum verification, TEE hardening, independent audit</td></tr>
+    <tr><td>WP4</td><td>Energy Pilot</td><td>RWTH Aachen EBC (planned)</td><td>Real-world BEMS integration, operational data</td></tr>
+    <tr><td>WP5</td><td>AI Governance & XAI</td><td>TU Delft AISyLab (planned)</td><td>Explainability methods, legal mapping</td></tr>
+    <tr><td>WP6</td><td>Dissemination & Exploitation</td><td>To be confirmed</td><td>Standardization, market access, white papers</td></tr>
+  </table>
+
+  <div class="highlight">
+    <strong>Note:</strong> Turkey is a Horizon Europe Full Associated Country. FEAM.co operates from Teknopark İstanbul, providing access to EU-standard pilot environments.
+  </div>
+
+  <h2>7. Market Opportunity</h2>
+  <ul>
+    <li><strong>TAM:</strong> AI Governance market estimated at $1.28B (2026), growing to $2.04B by 2032 (~8% CAGR)</li>
+    <li><strong>Regulatory Trigger:</strong> August 2026 compliance deadline creates immediate demand</li>
+    <li><strong>Business Model:</strong> SaaS (per-decision pricing), White-label licensing, Compliance consulting</li>
+  </ul>
+
+  <h2>8. Differentiation</h2>
+  <table>
+    <tr><th>Capability</th><th>Traditional AI Systems</th><th>VeriCore</th></tr>
+    <tr><td>Decision making</td><td>Black box, probabilistic</td><td><strong>Deterministic + Rule-based</strong></td></tr>
+    <tr><td>Log integrity</td><td>Mutable (can be altered)</td><td><strong>Immutable (WORM chain)</strong></td></tr>
+    <tr><td>Compliance proof</td><td>By assertion ("trust us")</td><td><strong>By architecture (cryptographic)</strong></td></tr>
+    <tr><td>AI's role</td><td>Decision maker</td><td><strong>Advisor only</strong></td></tr>
+    <tr><td>Audit verification</td><td>Trust-based</td><td><strong>Independently verifiable</strong></td></tr>
+  </table>
+
+  <h2>9. Roadmap</h2>
+  <table>
+    <tr><th>Period</th><th>Milestone</th><th>TRL</th></tr>
+    <tr><td>M1–6</td><td>EU AI Act compliance model formalization, rule engine hardening</td><td>4 → 5</td></tr>
+    <tr><td>M7–18</td><td>Full VeriCore development + BEMS integration</td><td>5 → 6</td></tr>
+    <tr><td>M19–24</td><td>Pilot deployment at real energy facility</td><td>6 → 7</td></tr>
+    <tr><td>M25–30</td><td>Independent cryptographic audit, performance validation</td><td>7</td></tr>
+    <tr><td>M31–36</td><td>Commercialization: licensing, strategic partnerships</td><td>7+</td></tr>
+  </table>
+
+  <h2>10. Resources</h2>
+  <ul>
+    <li><strong>Website:</strong> <a href="https://feam.co">https://feam.co</a></li>
+    <li><strong>Product:</strong> <a href="https://feam.co/vericore/">https://feam.co/vericore/</a></li>
+    <li><strong>Live Demo:</strong> <a href="https://feam.co/demo/">https://feam.co/demo/</a></li>
+    <li><strong>API Docs:</strong> <a href="https://feam-audit-api-final.onrender.com/docs">Swagger UI</a></li>
+    <li><strong>Registered Trademark:</strong> TR 2024 121973 (Nice Class 42) — Turkish Patent and Trademark Office (TÜRKPATENT)</li>
+    <li><strong>Contact:</strong> Erdem Özcan — erdem@feam.co</li>
+  </ul>
+
+  <div class="footer-doc">
+    <p>VeriCore Concept Note v1.1 — CL4-2026 | FEAM.co / 5E Yapı Sistemleri Yönetimi Ltd. Şti. | Teknopark İstanbul</p>
+    <p>"We don't trust AI — we prove AI."</p>
+  </div>
+</div>
+
+<script>
+function downloadPDF() {
+  const btn = document.getElementById('btnDownload');
+  btn.classList.add('loading');
+  btn.textContent = '';
+  btn.innerHTML = '<span class="spinner" style="display:block"></span> Generating…';
+
+  const el = document.getElementById('pdf-content');
+  const opt = {
+    margin:       [15, 20, 15, 20],
+    filename:     'VeriCore_ConceptNote_CL4-2026_v1.1_FEAM.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  html2pdf().set(opt).from(el).save().then(() => {
+    btn.classList.remove('loading');
+    btn.innerHTML = '<span class="dl-icon">✅</span> Downloaded!';
+    setTimeout(() => {
+      btn.innerHTML = '<span class="dl-icon">📄</span> Download PDF';
+    }, 3000);
+  }).catch(() => {
+    btn.classList.remove('loading');
+    btn.innerHTML = '<span class="dl-icon">📄</span> Download PDF';
+    window.print();
+  });
+}
+</script>
+
+</body>
+</html>
