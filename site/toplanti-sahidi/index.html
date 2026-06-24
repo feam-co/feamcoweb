@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FEAM Toplantı Şahidi · Telefon</title>
+<meta name="theme-color" content="#15171b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<style>
+  :root{
+    --ink:#15171b;        /* mürekkep zemin */
+    --ink-2:#1b1e24;      /* derin panel */
+    --panel:#21252d;      /* defter yüzeyi */
+    --panel-2:#272c35;
+    --line:#343a45;       /* hat */
+    --bone:#ece7db;       /* kemik metin */
+    --bone-dim:#c3bfb4;
+    --muted:#8b909b;      /* soluk */
+    --brass:#c7a04a;      /* pirinç / mühür / L0 */
+    --teal:#4f9dc4;       /* türev / L1 */
+    --seal:#57a98a;       /* mühürlü / L2 */
+    --warn:#d9694e;       /* uyarı / L3 / mahremiyet */
+    --radius:14px;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(120% 80% at 50% -10%, #1d2129 0%, var(--ink) 55%) fixed,
+      var(--ink);
+    color:var(--bone);
+    font-family:var(--sans);
+    font-size:16px;line-height:1.55;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:22px 16px 80px}
+  .eyebrow{
+    font:600 11px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;
+    color:var(--brass);margin:0 0 8px
+  }
+  h1.mark{
+    font:400 34px/1.02 var(--serif);letter-spacing:.01em;margin:0;color:var(--bone)
+  }
+  h1.mark .v{font:600 12px/1 var(--mono);color:var(--muted);vertical-align:super;margin-left:8px;letter-spacing:.05em}
+  .tagline{color:var(--bone-dim);font-style:italic;margin:10px 0 0;font-family:var(--serif);font-size:16px}
+
+  .honesty{
+    margin:18px 0 6px;padding:13px 14px;border:1px solid var(--line);
+    border-left:3px solid var(--warn);border-radius:10px;background:#1c1d20;
+    color:var(--bone-dim);font-size:13.5px
+  }
+  .honesty b{color:var(--bone)}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;margin:16px 0
+  }
+  .card > h2{
+    font:600 12px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 4px;display:flex;align-items:center;gap:10px
+  }
+  .card > h2 .step{
+    font:600 12px/1 var(--mono);color:var(--ink);background:var(--brass);
+    width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center
+  }
+  .card .lead{color:var(--bone-dim);font-size:13.5px;margin:0 0 14px}
+
+  label{display:block;font-size:12.5px;color:var(--muted);letter-spacing:.04em;margin:12px 0 5px}
+  input[type=text],textarea,select{
+    width:100%;background:var(--ink-2);border:1px solid var(--line);border-radius:9px;
+    color:var(--bone);font:400 15px/1.5 var(--sans);padding:11px 12px;font-family:inherit
+  }
+  textarea{resize:vertical;min-height:96px}
+  input:focus,textarea:focus,select:focus,button:focus-visible{
+    outline:2px solid var(--brass);outline-offset:1px;border-color:var(--brass)
+  }
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row > *{flex:1 1 160px;min-width:0}
+
+  .choice{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .choice label{
+    flex:1 1 140px;display:flex;align-items:center;gap:9px;margin:0;cursor:pointer;
+    background:var(--ink-2);border:1px solid var(--line);border-radius:9px;padding:11px 12px;
+    color:var(--bone);font-size:14px;letter-spacing:0
+  }
+  .choice input{accent-color:var(--brass);width:16px;height:16px;flex:0 0 auto}
+
+  button{
+    font:600 14px/1 var(--sans);letter-spacing:.02em;cursor:pointer;
+    border-radius:9px;border:1px solid var(--line);background:var(--panel-2);color:var(--bone);
+    padding:11px 15px;transition:transform .06s ease, background .15s ease, border-color .15s
+  }
+  button:hover{background:#2e333d}
+  button:active{transform:translateY(1px)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  button.primary{background:var(--brass);color:#241c08;border-color:var(--brass)}
+  button.primary:hover{background:#d4ad57}
+  button.seal{background:var(--seal);color:#08231a;border-color:var(--seal)}
+  button.seal:hover{filter:brightness(1.07)}
+  button.ghost{background:transparent}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;font:600 10.5px/1 var(--mono);
+    letter-spacing:.06em;padding:4px 8px;border-radius:999px;border:1px solid currentColor
+  }
+  .L0{color:var(--brass)} .L1{color:var(--teal)} .L2{color:var(--seal)} .L3{color:var(--warn)}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:0 0 auto}
+
+  .flags{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+  .flag{
+    display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--bone-dim);
+    background:#241c1a;border:1px solid #4a2f28;border-radius:8px;padding:8px 10px
+  }
+  .flag .k{color:var(--warn);font:600 11px/1.4 var(--mono);letter-spacing:.04em;flex:0 0 auto;min-width:78px}
+  .flag .v{word-break:break-word}
+  .empty{color:var(--muted);font-size:13px;font-style:italic}
+
+  .item{
+    border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-top:9px;background:var(--ink-2)
+  }
+  .item .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .item .ty{font:600 10.5px/1 var(--mono);letter-spacing:.08em;padding:3px 7px;border-radius:6px}
+  .ty-KARAR{background:#2b2f1c;color:#cdd07a}
+  .ty-GOREV{background:#1c2a2f;color:#86c8df}
+  .ty-RISK{background:#2f1f1c;color:#e09a86}
+  .item .txt{margin:7px 0 0;font-size:14.5px;color:var(--bone)}
+  .item .meta{font-size:12px;color:var(--muted);margin-top:5px}
+  .item .act{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+  .item button{padding:7px 11px;font-size:12.5px}
+  .st{font:600 10px/1 var(--mono);letter-spacing:.06em;padding:3px 7px;border-radius:6px;margin-left:auto}
+  .st-PROPOSED{background:#1c2a2f;color:var(--teal)}
+  .st-APPROVED{background:#16271f;color:var(--seal)}
+
+  .chip{
+    display:inline-flex;align-items:center;font:600 12px/1 var(--mono);letter-spacing:.03em;
+    color:var(--brass);background:#241f12;border:1px solid #4a3d1c;border-radius:7px;padding:6px 9px;margin:0 6px 6px 0
+  }
+
+  /* L3 closed gate */
+  .gate{border-left:3px solid var(--warn)}
+  .gate .switch{
+    display:flex;align-items:center;gap:12px;margin-top:8px;padding:12px;border-radius:10px;
+    background:#241c1a;border:1px dashed #5a382f
+  }
+  .gate .knob{
+    width:44px;height:24px;border-radius:999px;background:#3a2a26;position:relative;flex:0 0 auto
+  }
+  .gate .knob::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--warn)}
+  .gate .closed{font:700 10px/1 var(--mono);letter-spacing:.12em;color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:4px 7px}
+
+  /* receipt */
+  .receipt{
+    background:#faf7ef;color:#23201a;border-radius:10px;padding:18px;font-size:13.5px;
+    border:1px solid #d8d2c2
+  }
+  .receipt h3{font:700 13px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#5c4a1e;margin:0 0 2px}
+  .receipt .rtag{font-family:var(--serif);font-style:italic;color:#6b6253;margin:0 0 14px;font-size:13px}
+  .receipt .field{display:flex;gap:10px;padding:5px 0;border-bottom:1px dotted #d8d2c2}
+  .receipt .field .lk{color:#7a7058;flex:0 0 120px;font-size:12px}
+  .receipt .field .lv{color:#23201a;font-weight:600}
+  .receipt .sec{margin-top:14px}
+  .receipt .sec b{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#5c4a1e;margin-bottom:5px}
+  .receipt ol,.receipt ul{margin:0;padding-left:18px}
+  .receipt li{margin:3px 0}
+  .receipt .hashline{margin-top:14px;font-family:var(--mono);font-size:11px;color:#6b6253;word-break:break-all;border-top:1px solid #d8d2c2;padding-top:10px}
+  .receipt .no{color:var(--warn);font-weight:700}
+  .receipt .yes{color:#2e7d52;font-weight:700}
+  .stamp{
+    margin-top:14px;display:none;align-items:center;gap:12px
+  }
+  .stamp.on{display:flex}
+  .stamp .wax{
+    width:74px;height:74px;border-radius:50%;flex:0 0 auto;
+    background:radial-gradient(circle at 35% 30%, #d7b15c, #a9842f 70%);
+    color:#3a2c08;display:flex;align-items:center;justify-content:center;text-align:center;
+    font:700 9px/1.15 var(--mono);letter-spacing:.06em;border:2px solid #8c6c24;
+    box-shadow:inset 0 2px 5px rgba(255,255,255,.4), 0 4px 12px rgba(0,0,0,.3);
+    transform:scale(1)
+  }
+  .stamp.anim .wax{animation:press .45s cubic-bezier(.2,.8,.2,1)}
+  @keyframes press{0%{transform:scale(2.4);opacity:0}55%{transform:scale(.92);opacity:1}100%{transform:scale(1)}}
+  .stamp .wt{color:#5c4a1e;font-size:13px}
+  .stamp .wt b{color:#23201a}
+
+  /* chain */
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 14px}
+  .legend .pill{font-size:10px}
+  .chain{list-style:none;margin:0;padding:0;position:relative}
+  .chain li{position:relative;padding:0 0 14px 26px}
+  .chain li::before{content:"";position:absolute;left:7px;top:18px;bottom:-4px;width:2px;background:var(--line)}
+  .chain li:last-child::before{display:none}
+  .node{position:absolute;left:0;top:5px;width:16px;height:16px;border-radius:50%;background:var(--ink);border:2px solid var(--muted)}
+  .node.L0{border-color:var(--brass)} .node.L1{border-color:var(--teal)}
+  .node.L2{border-color:var(--seal)} .node.L3{border-color:var(--warn)}
+  .node.bad{border-color:var(--warn);background:var(--warn)}
+  .node.ok::after{content:"";position:absolute;inset:2px;border-radius:50%;background:currentColor;opacity:.8}
+  .evt{background:var(--ink-2);border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+  .evt.sealed{border-color:var(--brass);background:#221c10}
+  .evt .eh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .evt .etype{font:600 11.5px/1 var(--mono);letter-spacing:.04em;color:var(--bone)}
+  .evt .when{font-size:11px;color:var(--muted);margin-left:auto;font-family:var(--mono)}
+  .evt .ed{font-size:12.5px;color:var(--bone-dim);margin-top:5px;word-break:break-word}
+  .evt .hsh{font:400 10.5px/1.5 var(--mono);color:var(--muted);margin-top:6px;word-break:break-all}
+  .evt .hsh b{color:var(--brass)}
+  .verdict{margin-top:12px;font-size:13px;padding:10px 12px;border-radius:9px;display:none}
+  .verdict.ok{display:block;background:#16271f;border:1px solid #2c5b45;color:#9fe0c2}
+  .verdict.fail{display:block;background:#2a1714;border:1px solid #5a2f28;color:#f0a591}
+
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:30px;line-height:1.7}
+  .foot b{color:var(--bone-dim)}
+  .axiom{font-family:var(--serif);font-style:italic;color:var(--bone-dim);font-size:13.5px}
+
+  .hide{display:none !important}
+
+
+  /* ses şahidi */
+  .audioBox{
+    border:1px solid var(--line);border-radius:12px;background:var(--ink-2);
+    padding:13px 14px;margin-top:10px
+  }
+  .recStatus{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 10px}
+  .recDot{width:12px;height:12px;border-radius:50%;background:var(--muted);box-shadow:none}
+  .recDot.on{background:#e34f3f;box-shadow:0 0 0 6px rgba(227,79,63,.16);animation:blink 1s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  .recTime{font:700 22px/1 var(--mono);color:var(--bone)}
+  .recSmall{font:600 11px/1.4 var(--mono);color:var(--muted);letter-spacing:.04em}
+  .meter{height:10px;border-radius:999px;background:#14151a;border:1px solid var(--line);overflow:hidden;margin:10px 0}
+  .meter > div{height:100%;width:0%;background:linear-gradient(90deg,var(--seal),var(--brass),var(--warn));transition:width .08s linear}
+  audio{width:100%;margin-top:10px}
+  .hashBox{font:400 11px/1.5 var(--mono);color:var(--muted);word-break:break-all;background:#14151a;border:1px solid var(--line);border-radius:8px;padding:9px;margin-top:10px}
+  .hashBox b{color:var(--brass)}
+
+  /* konuşmacı & işaretler */
+  .spk{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+  .spk .sid{font:600 12px/1 var(--mono);color:var(--brass);background:#241f12;border:1px solid #4a3d1c;border-radius:7px;padding:8px 9px;flex:0 0 auto}
+  .spk input{flex:1 1 150px}
+  .spk button{flex:0 0 auto;padding:8px 11px;font-size:12.5px}
+  .spk .lbl{font:600 12px/1 var(--mono);color:var(--seal);background:#16271f;border:1px solid #2c5b45;border-radius:7px;padding:8px 9px}
+  .markerbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .markerbar button{padding:9px 12px}
+  button.warnbtn{border-color:#5a382f;color:var(--warn)}
+  button.warnbtn:hover{background:#2a1a16}
+  #timeline{margin-top:6px;display:flex;flex-direction:column;gap:6px}
+  .tl{display:flex;align-items:center;gap:10px;font-size:13px;background:var(--ink-2);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+  .tl .tt{font:600 11px/1 var(--mono);color:var(--muted);flex:0 0 auto}
+  .tl .tk{font:600 10px/1 var(--mono);letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#1c2a2f;color:var(--teal);flex:0 0 auto}
+  .tl .tk.ov{background:#2a1a16;color:var(--warn)}
+  .tl .tx{color:var(--bone-dim);word-break:break-word}
+  details.ref{margin-top:16px;border:1px solid var(--line);border-radius:9px;background:var(--ink-2);padding:10px 12px}
+  details.ref summary{cursor:pointer;color:var(--muted);font-size:12.5px;letter-spacing:.04em}
+  pre.code{font:400 11.5px/1.5 var(--mono);color:var(--bone-dim);background:#14151a;border:1px solid var(--line);border-radius:8px;padding:11px;overflow-x:auto;margin:8px 0 0;white-space:pre}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+  }
+  @media print{
+    body{background:#fff;color:#000}
+    .noprint{display:none !important}
+    .card{border:none;padding:0;margin:14px 0}
+    .receipt{border:1px solid #999}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">FEAM · Karar Kanıtı</p>
+    <h1 class="mark">Toplantı Şahidi<span class="v">v0.2 AUDIO</span></h1>
+    <p class="tagline">Toplantı notu değil, kararın izini ve şahidini üretir.</p>
+  </header>
+
+  <div class="honesty">
+    <b>Bu sürüm canlı streaming transkripsiyon/çeviri motoru değildir.</b> Lokal bir Toplantı Şahidi
+    demosudur: notun <i>taslak</i> ile <i>insan mühürlü kesin kayıt</i> ayrımını, mahremiyet işaretlemeyi,
+    terim yönetişimini ve hash şahit zincirini gösterir. Burada “taslak / kesin” ayrımı
+    <i>düzenlenebilir not</i> ile <i>insan onaylı mühür</i> demektir — teknik bir akış iddiası değildir.
+    Hiçbir veri dışarı gönderilmez; tüm hesaplama tarayıcıda, lokalde yapılır. <b>PWA kayıt sınırı:</b> bu sürüm sahada güvenilecek arka-plan kaydedici değildir; ekran açık ve sayfa ön planda tutulmalıdır. Kesinti sezilirse zincire ayrıca yazılır.
+  </div>
+
+  <!-- 1 · Rıza Kapısı -->
+  <section class="card" id="card-consent">
+    <h2><span class="step">1</span> Rıza Kapısı</h2>
+    <p class="lead">Şahit oturumu, önce kayıt rızasının kayda geçmesiyle açılır. Bu, zincirin ilk
+      halkasıdır (L0 · LOCAL_RAW).</p>
+
+    <label for="mtg">Toplantı adı</label>
+    <input type="text" id="mtg" placeholder="Örn. VeriCore – Halkbank pilot mutabakatı">
+
+    <div class="row">
+      <div>
+        <label for="dt">Tarih</label>
+        <input type="text" id="dt" placeholder="YYYY-AA-GG">
+      </div>
+      <div>
+        <label for="op">Mühür yetkilisi (onaylayan)</label>
+        <input type="text" id="op" placeholder="Örn. Erdem Özcan">
+      </div>
+    </div>
+
+    <label for="part">Katılımcılar (virgülle)</label>
+    <input type="text" id="part" placeholder="Erdem Özcan, Filiz Özcan, …">
+
+    <label>Katılımcı kayıt onayı <span style="color:var(--muted);font-size:11px">(operatör beyanı)</span></label>
+    <div class="choice" id="consentChoice">
+      <label><input type="radio" name="consent" value="evet"> Alındı</label>
+      <label><input type="radio" name="consent" value="hayir"> Alınmadı</label>
+    </div>
+    <p class="lead" id="consentWarn" style="color:var(--warn);margin-top:8px;display:none">
+      Onay “alınmadı” olarak kaydedilecek. Fiş bunu açıkça gösterir; örtmez. Onay alanı sistem kanıtı değil, operatör beyanıdır.</p>
+
+    <div class="btnrow">
+      <button class="primary" id="openBtn" disabled>Oturumu aç</button>
+    </div>
+  </section>
+
+
+  <!-- 2 · Ses Şahidi -->
+  <section class="card hide" id="card-audio">
+    <h2><span class="step">2</span> Ses Şahidi — Note20 Ultra</h2>
+    <p class="lead">Bu katman mikrofondan ham toplantı sesini alır ve <b>L0 · LOCAL_RAW</b> olarak zincire bağlar.
+      Otomatik konuşmacı ayırma burada yoktur. PWA kayıt boyunca ekran açık ve sayfa ön planda kalmalıdır; kesinti sezilirse zincire <b>AUDIO_CAPTURE_INTERRUPTED</b> olarak yazılır.</p>
+
+    <div class="audioBox">
+      <div class="recStatus">
+        <span class="recDot" id="recDot"></span>
+        <span class="recTime" id="recTime">00:00</span>
+        <span class="pill L0"><span class="dot"></span> L0 · AUDIO_LOCAL_RAW</span>
+        <span class="pill L1" id="wakePill"><span class="dot"></span> WAKE LOCK: —</span>
+      </div>
+      <div class="meter" aria-label="ses seviyesi"><div id="levelBar"></div></div>
+      <p class="lead" id="audioStatus" style="margin:8px 0 0">Hazır. “Ses kaydını başlat” butonuna basınca tarayıcı mikrofon izni ister.</p>
+      <div class="btnrow noprint">
+        <button class="primary" id="audioStart">Ses kaydını başlat</button>
+        <button class="warnbtn" id="audioStop" disabled>Kaydı durdur</button>
+        <button id="audioDownload" disabled>Ses dosyasını indir</button>
+      </div>
+      <audio id="audioPlayback" controls class="hide"></audio>
+      <div class="hashBox hide" id="audioHashBox"></div>
+    </div>
+
+    <p class="lead" style="margin-top:10px">
+      Not: Chrome mikrofon API’si güvenli bağlam ister. Android’de dosyayı doğrudan açınca çalışmazsa,
+      aynı HTML’i <b>HTTPS</b> veya <b>localhost</b> üzerinden açmak gerekir. Kayıt boyunca ekranı açık tutmak için
+      Screen Wake Lock istenir; desteklenmiyorsa telefonun ekran zaman aşımını elle kapat. Zincir ve ses parçaları
+      IndexedDB’ye yazılır; sayfa kapanırsa kurtarma ihtimali artsın diye.
+    </p>
+  </section>
+
+
+  <!-- 2 · Toplantı Notu -->
+  <section class="card hide" id="card-note">
+    <h2><span class="step">3</span> Toplantı Notu — Taslak</h2>
+    <p class="lead">İnsanın girdiği ham not = en güçlü şahit sınıfı (L0). Mahremiyet filtresi yazarken
+      lokalde tarar.</p>
+    <textarea id="note" placeholder="Toplantıda konuşulanları / kararları buraya yazın…"></textarea>
+    <div class="btnrow">
+      <button id="saveNote">Taslağı zincire kaydet</button>
+      <span class="pill L0"><span class="dot"></span> L0 · LOCAL_RAW</span>
+    </div>
+    <div class="flags" id="piiFlags"><p class="empty">Mahremiyet taraması: henüz işaret yok.</p></div>
+  </section>
+
+  <!-- 3 · Konuşmacılar & İşaretler -->
+  <section class="card hide" id="card-speakers">
+    <h2><span class="step">4</span> Konuşmacılar & İşaretler</h2>
+    <p class="lead">v0’da konuşmacı ayrımı <b>manueldir</b> — insan işaretler. Otomatik diarization
+      (pyannote / WhisperX) <b>v0.1 · laptop adımıdır</b> ve bu demoda yoktur. Jenerik etiketler
+      (SPEAKER_00…) KVKK-güvenlidir; gerçek isim ancak insan onayıyla bağlanır (L2). “Kim söyledi?”
+      bir makine tahminiyse kesin kayıt değildir.</p>
+
+    <label>Konuşmacılar</label>
+    <div id="speakerList"></div>
+    <div class="btnrow"><button class="ghost" id="addSpeaker">Konuşmacı ekle</button></div>
+
+    <label style="margin-top:16px">Anlık işaretler — L0 · insan</label>
+    <div class="markerbar" id="turnBar"></div>
+    <div class="btnrow">
+      <button class="warnbtn" id="mkOverlap">Aynı anda konuşma</button>
+      <button id="mkKarar">Karar anı</button>
+      <button id="mkGorev">Görev anı</button>
+      <button id="mkRisk">Risk anı</button>
+    </div>
+
+    <label style="margin-top:14px">Zaman çizelgesi</label>
+    <div id="timeline"><p class="empty">Henüz işaret yok.</p></div>
+
+    <details class="ref">
+      <summary>v0.1 · laptop hattı — bu demoda çalışmıyor (yalnızca veri modeli referansı)</summary>
+      <p class="lead" style="margin-top:8px">Toplantı sonrası lokal pyannote/WhisperX şu olayları üretecek.
+        Hepsi makine türevi olduğu için L1’dir ve insan onayına kadar kesin sayılmaz:</p>
+      <pre class="code">{
+  "event_type": "SPEAKER_SEGMENT_DETECTED",
+  "witness_class": "L1",
+  "metadata": { "speaker_id":"SPEAKER_01", "start":"00:01:12.2",
+                "end":"00:01:18.9", "confidence":0.78,
+                "needs_review":true, "modality":"audio" }
+}
+{
+  "event_type": "AUDIO_HANDOFF_VERIFIED", "witness_class": "L0",
+  "payload": { "audio_hash_phone":"…", "audio_hash_laptop":"…",
+               "match": true }
+}</pre>
+    </details>
+  </section>
+
+  <!-- 4 · Karar İzi -->
+  <section class="card hide" id="card-trace">
+    <h2><span class="step">5</span> Karar / Görev / Risk</h2>
+    <p class="lead">Sistem önerir (L1 · LOCAL_DERIVED), insan onaylar (L2 · HUMAN_COMMITTED). Onaysız
+      hiçbir kalem kesin kabul edilmez.</p>
+
+    <div class="row">
+      <div style="flex:0 0 120px">
+        <label for="itype">Tür</label>
+        <select id="itype">
+          <option value="KARAR">Karar</option>
+          <option value="GOREV">Görev</option>
+          <option value="RISK">Risk</option>
+        </select>
+      </div>
+      <div>
+        <label for="itext">İçerik</label>
+        <input type="text" id="itext" placeholder="Örn. Pilot shadow-mode olarak başlatılacak">
+      </div>
+      <div style="flex:0 0 150px">
+        <label for="ispk">Konuşmacı (ops.)</label>
+        <select id="ispk"></select>
+      </div>
+    </div>
+    <div class="row" id="taskExtra">
+      <div><label for="iowner">Sorumlu</label><input type="text" id="iowner" placeholder="Kim"></div>
+      <div><label for="idue">Son tarih</label><input type="text" id="idue" placeholder="YYYY-AA-GG"></div>
+    </div>
+
+    <div class="btnrow">
+      <button id="addItem">Kalem ekle (öneri)</button>
+      <button class="ghost" id="scanItems">Nottan öneri çıkar</button>
+    </div>
+
+    <div id="itemList" style="margin-top:12px"><p class="empty">Henüz kalem yok.</p></div>
+  </section>
+
+  <!-- 4 · Terim Yönetişimi -->
+  <section class="card hide" id="card-term">
+    <h2><span class="step">6</span> Terim Yönetişimi</h2>
+    <p class="lead">FEAM terimi canlı çeviri modeline kilitlenemez. O yüzden burada görünür, düzeltilebilir
+      ve denetlenebilir hale getiriyoruz: öneri (L1) → insan onayı (L2). <b>Model terimi bozabilir; FEAM
+      bunu kanıt zincirine yazar.</b></p>
+
+    <div id="glossary"></div>
+
+    <div class="row" style="margin-top:6px">
+      <div><label for="tsrc">Ham / yanlış çeviri</label><input type="text" id="tsrc" placeholder="Örn. balance mechanism"></div>
+      <div style="flex:0 0 180px">
+        <label for="ttgt">FEAM kilit terimi</label>
+        <select id="ttgt"></select>
+      </div>
+    </div>
+    <div class="btnrow">
+      <button id="addTerm">Düzeltme öner</button>
+      <button class="ghost" id="scanTerm">Notu tara → uyuşmazlık bul</button>
+    </div>
+    <div id="termList" style="margin-top:12px"><p class="empty">Henüz terim düzeltmesi yok.</p></div>
+  </section>
+
+  <!-- 5 · Bulut Çeviri (kapalı L3) -->
+  <section class="card gate hide" id="card-gate">
+    <h2><span class="step">7</span> Bulut Canlı Çeviri</h2>
+    <p class="lead">Çeviri çekirdek değil; opsiyonel <b>türev</b> çıktıdır ve asla L0/L2 ile eş seviyede
+      olamaz.</p>
+    <div class="switch">
+      <div class="knob" aria-hidden="true"></div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="pill L3"><span class="dot"></span> L3 · EXTERNAL_DERIVED / ADVISORY</span>
+          <span class="closed">KAPALI</span>
+        </div>
+        <p class="lead" style="margin:8px 0 0">Açılırsa bu işlem bir bulut çeviri servisine veri gönderir.
+          v0’da kapalıdır. Açılmadan önce terim doğruluğu (özellikle “sessiz makul ikame”) ölçülmeden
+          hiçbir doğruluk vaadi verilmez.</p>
+      </div>
+    </div>
+    <div class="btnrow"><button id="gateBtn" class="ghost">Neden kapalı?</button></div>
+    <p class="lead" id="gateWhy" style="display:none;margin-top:4px">
+      Çünkü FEAM’in moat’ı çeviri kalitesi değil; kararın rızasını, mahremiyetini, insan onayını ve
+      değişmezliğini kanıtlamaktır. Bulut çeviri ancak açık rızalı, etiketli ve ölçülmüş bir yan modül
+      olarak — pilot sonrası — eklenir.</p>
+  </section>
+
+  <!-- 6 · Şahit Fişi -->
+  <section class="card hide" id="card-receipt">
+    <h2><span class="step">8</span> Şahit Fişi & İnsan Mührü</h2>
+    <p class="lead">Asıl kanıt fişi insan onayından (L2 · HUMAN_COMMITTED) çıkar. Mühür, fişin o anki
+      bütününü hash’ler.</p>
+    <div class="receipt" id="receipt"></div>
+    <div class="stamp" id="stamp">
+      <div class="wax">FEAM<br>ŞAHİT<br>MÜHRÜ</div>
+      <div class="wt">Mühürlendi.<br>Witness ID: <b id="wid">—</b></div>
+    </div>
+    <div class="btnrow noprint">
+      <button class="seal" id="sealBtn">İnsan mührü ile kesinleştir</button>
+      <button id="exportBtn" disabled>JSON dışa aktar</button>
+      <button class="ghost" id="printBtn" disabled>Yazdır / PDF</button>
+    </div>
+  </section>
+
+  <!-- 7 · Şahit Zinciri -->
+  <section class="card hide" id="card-chain">
+    <h2><span class="step">9</span> Şahit Zinciri</h2>
+    <p class="lead">Her olay bir önceki halkanın hash’ine bağlanır. Sonradan değişiklik zinciri kırar.</p>
+    <div class="legend">
+      <span class="pill L0"><span class="dot"></span> L0 ham/orijinal</span>
+      <span class="pill L1"><span class="dot"></span> L1 yerel türev</span>
+      <span class="pill L2"><span class="dot"></span> L2 insan onaylı</span>
+      <span class="pill L3"><span class="dot"></span> L3 harici (kapalı)</span>
+    </div>
+    <ul class="chain" id="chain"></ul>
+    <div class="btnrow noprint">
+      <button id="verifyBtn">Zinciri doğrula</button>
+      <button class="ghost" id="tamperBtn">Kurcalama testi (1. halkayı boz)</button>
+    </div>
+    <div class="verdict" id="verdict"></div>
+  </section>
+
+  <p class="foot">
+    <span class="axiom">“LLM müşavirdir. Kural motoru hâkimdir. WitnessChain şahittir. İnsan egemenliği son kapıdır.”</span><br>
+    <b>FEAM Toplantı Şahidi v0.2 AUDIO</b> — Note20 Ultra ses şahidi + manuel konuşmacı/marker katmanı. Sıfır bağımlılık, tam lokal.
+  </p>
+
+</div>
+
+<script>
+"use strict";
+
+/* ---------- sha256 (lokal, bağımlılıksız; geraintluff impl, UTF-8 sarmalı) ---------- */
+var _sha256 = function (ascii) {
+  function rr(v, a){ return (v>>>a) | (v<<(32-a)); }
+  var maxWord = Math.pow(2,32), result='', words=[], i, j;
+  var asciiBitLength = ascii.length*8;
+  var hash=_sha256.h=_sha256.h||[], k=_sha256.k=_sha256.k||[], pc=k.length, comp={};
+  for (var cand=2; pc<64; cand++){
+    if(!comp[cand]){
+      for(i=0;i<313;i+=cand) comp[i]=cand;
+      hash[pc]=(Math.pow(cand,.5)*maxWord)|0;
+      k[pc++]=(Math.pow(cand,1/3)*maxWord)|0;
+    }
+  }
+  ascii+='\x80';
+  while(ascii.length%64-56) ascii+='\x00';
+  for(i=0;i<ascii.length;i++){ j=ascii.charCodeAt(i); if(j>>8) return; words[i>>2]|=j<<((3-i)%4)*8; }
+  words[words.length]=((asciiBitLength/maxWord)|0);
+  words[words.length]=(asciiBitLength);
+  for(j=0;j<words.length;){
+    var w=words.slice(j,j+=16), oldHash=hash; hash=hash.slice(0,8);
+    for(i=0;i<64;i++){
+      var w15=w[i-15], w2=w[i-2], a=hash[0], e=hash[4];
+      var t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]
+        +(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]
+        +(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+      var t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+      hash=[(t1+t2)|0].concat(hash); hash[4]=(hash[4]+t1)|0;
+    }
+    for(i=0;i<8;i++) hash[i]=(hash[i]+oldHash[i])|0;
+  }
+  for(i=0;i<8;i++) for(j=3;j+1;j--){ var b=(hash[i]>>(j*8))&255; result+=((b<16)?0:'')+b.toString(16); }
+  return result;
+};
+function utf8(s){ return unescape(encodeURIComponent(String(s))); }
+function sha256(s){ return _sha256(utf8(s)); }
+
+/* ---------- canonical JSON (stabil anahtar sırası) ---------- */
+function canonical(v){
+  if(v===null||typeof v!=='object') return JSON.stringify(v);
+  if(Array.isArray(v)) return '['+v.map(canonical).join(',')+']';
+  var keys=Object.keys(v).sort();
+  return '{'+keys.map(function(k){return JSON.stringify(k)+':'+canonical(v[k]);}).join(',')+'}';
+}
+
+/* ---------- durum ---------- */
+var GENESIS='0000000000000000000000000000000000000000000000000000000000000000';
+var S = { session:null, items:[], terms:[], chain:[], sealed:false, ids:0, speakers:[], markers:[], audio:null, audioInterruptions:[] };
+function nid(){ return ++S.ids; }
+function $(s){ return document.querySelector(s); }
+function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+var GLOSSARY = [
+  {term:'Mizan', en:'just measure', wrong:['balance mechanism','balance sheet','denge tablosu']},
+  {term:'WitnessChain', en:'WitnessChain', wrong:['witness chain','tanık zinciri','şahit zinciri']},
+  {term:'VeriCore', en:'VeriCore', wrong:['Very Core','Veri Corp','data core','veri çekirdeği']},
+  {term:'hakediş', en:'progress payment / entitlement', wrong:['salary payment','maaş','progress']},
+  {term:'emanet', en:'entrusted responsibility', wrong:['deposit account','deposit','mevduat']},
+  {term:'karar kanıt fişi', en:'decision evidence receipt', wrong:['note','makbuz','receipt note']},
+  {term:'kural motoru', en:'rule engine', wrong:['rule book','kural kitabı']},
+  {term:'GEÇTİ', en:'PASS', wrong:['passed by','geçildi']},
+  {term:'İNCELEMEYE DÜŞTÜ', en:'REVIEW_REQUIRED', wrong:['user preference','review note']}
+];
+
+
+/* ---------- IndexedDB WAL (write-ahead local persistence) ---------- */
+var WAL={db:null, ready:false, chunkSeq:0};
+function walOpen(){
+  return new Promise(function(resolve){
+    if(!('indexedDB' in window)){ resolve(false); return; }
+    var req=indexedDB.open('feam_toplanti_sahidi_wal',1);
+    req.onupgradeneeded=function(e){
+      var db=e.target.result;
+      if(!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
+      if(!db.objectStoreNames.contains('audio_chunks')) db.createObjectStore('audio_chunks',{keyPath:'id'});
+    };
+    req.onsuccess=function(e){ WAL.db=e.target.result; WAL.ready=true; resolve(true); };
+    req.onerror=function(){ resolve(false); };
+  });
+}
+function walPut(store,key,val){
+  if(!WAL.ready||!WAL.db) return;
+  try{
+    var tx=WAL.db.transaction(store,'readwrite');
+    if(store==='kv') tx.objectStore(store).put(val,key);
+    else tx.objectStore(store).put(val);
+  }catch(e){}
+}
+function walSaveState(){
+  walPut('kv','state',{saved_at:new Date().toISOString(), session:S.session, speakers:S.speakers, markers:S.markers, items:S.items, terms:S.terms, chain:S.chain, audio:S.audio, audioInterruptions:S.audioInterruptions});
+}
+function walSaveChunk(blob){
+  if(!blob||!blob.size) return;
+  walPut('audio_chunks',null,{id:'chunk_'+String(++WAL.chunkSeq).padStart(6,'0'), saved_at:new Date().toISOString(), blob:blob, size:blob.size, type:blob.type});
+}
+walOpen().then(function(ok){ if(ok && $('#audioStatus')) setAudioStatus('Hazır. Yerel WAL/IndexedDB açık. “Ses kaydını başlat” butonuna basınca tarayıcı mikrofon izni ister.'); });
+
+/* ---------- olay ekleme ---------- */
+function addEvent(type, cls, payload, actor, metadata){
+  var prev = S.chain.length ? S.chain[S.chain.length-1].current_hash : GENESIS;
+  var ev = {
+    seq:S.chain.length+1, event_type:type, witness_class:cls,
+    payload:payload, metadata:metadata||{}, actor:actor||'system',
+    timestamp:new Date().toISOString(), previous_hash:prev
+  };
+  ev.current_hash = sha256(prev + canonical(bodyOf(ev)));
+  S.chain.push(ev);
+  walSaveState();
+  renderChain(); renderReceipt();
+  return ev;
+}
+function bodyOf(ev){
+  return { seq:ev.seq, event_type:ev.event_type, witness_class:ev.witness_class,
+           payload:ev.payload, metadata:ev.metadata||{}, actor:ev.actor,
+           timestamp:ev.timestamp, previous_hash:ev.previous_hash };
+}
+
+/* ---------- 1 · rıza kapısı ---------- */
+function consentReady(){
+  var hasName = $('#mtg').value.trim().length>0;
+  var c = document.querySelector('input[name=consent]:checked');
+  $('#openBtn').disabled = !(hasName && c);
+}
+$('#mtg').addEventListener('input', consentReady);
+document.querySelectorAll('input[name=consent]').forEach(function(r){
+  r.addEventListener('change', function(){
+    $('#consentWarn').style.display = (r.value==='hayir' && r.checked) ? 'block' : 'none';
+    consentReady();
+  });
+});
+$('#openBtn').addEventListener('click', function(){
+  var c = document.querySelector('input[name=consent]:checked').value;
+  S.session = {
+    meeting:$('#mtg').value.trim(),
+    date:$('#dt').value.trim() || new Date().toISOString().slice(0,10),
+    operator:$('#op').value.trim() || 'İnsan',
+    participants:$('#part').value.split(',').map(function(s){return s.trim();}).filter(Boolean),
+    consent:c
+  };
+  addEvent('SESSION_OPENED','L0',{
+    meeting:S.session.meeting, date:S.session.date,
+    participants:S.session.participants, consent:S.session.consent
+  }, S.session.operator);
+  ['#card-audio','#card-note','#card-speakers','#card-trace','#card-term','#card-gate','#card-receipt','#card-chain'].forEach(function(id){
+    $(id).classList.remove('hide');
+  });
+  initSpeakers();
+  $('#card-consent').classList.add('hide');
+  $('#card-note').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+
+/* ---------- 2 · Ses Şahidi — MediaRecorder ---------- */
+var REC = {
+  stream:null, recorder:null, chunks:[], startedAt:0, timer:null,
+  blob:null, url:null, analyser:null, audioCtx:null, levelRAF:null,
+  wakeLock:null, interruptionLogged:false, stopRequested:false
+};
+function fmtTime(ms){
+  var s=Math.floor(ms/1000), m=Math.floor(s/60); s=s%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function setAudioStatus(msg, warn){
+  var el=$('#audioStatus'); if(!el) return;
+  el.textContent=msg; el.style.color = warn ? 'var(--warn)' : 'var(--bone-dim)';
+}
+function pickMime(){
+  var types=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'];
+  if(!window.MediaRecorder) return '';
+  for(var i=0;i<types.length;i++){
+    try{ if(MediaRecorder.isTypeSupported(types[i])) return types[i]; }catch(e){}
+  }
+  return '';
+}
+async function blobSha256Hex(blob){
+  var buf=await blob.arrayBuffer();
+  if(window.crypto && crypto.subtle){
+    var digest=await crypto.subtle.digest('SHA-256', buf);
+    var arr=Array.from(new Uint8Array(digest));
+    return arr.map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+  }
+  // Fallback: binary-string hash. Büyük dosyalarda yavaş olabilir ama tamamen lokaldir.
+  var bytes=new Uint8Array(buf), s='', chunk=8192;
+  for(var i=0;i<bytes.length;i+=chunk){
+    var sub=bytes.subarray(i,i+chunk);
+    s += String.fromCharCode.apply(null, Array.from(sub));
+  }
+  return _sha256(s);
+}
+function stopLevelMeter(){
+  if(REC.levelRAF) cancelAnimationFrame(REC.levelRAF);
+  REC.levelRAF=null;
+  if($('#levelBar')) $('#levelBar').style.width='0%';
+}
+function startLevelMeter(stream){
+  try{
+    REC.audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    var src=REC.audioCtx.createMediaStreamSource(stream);
+    REC.analyser=REC.audioCtx.createAnalyser();
+    REC.analyser.fftSize=1024;
+    src.connect(REC.analyser);
+    var data=new Uint8Array(REC.analyser.fftSize);
+    function tick(){
+      REC.analyser.getByteTimeDomainData(data);
+      var sum=0;
+      for(var i=0;i<data.length;i++){ var v=(data[i]-128)/128; sum += v*v; }
+      var rms=Math.sqrt(sum/data.length);
+      var pct=Math.min(100, Math.round(rms*220));
+      if($('#levelBar')) $('#levelBar').style.width=pct+'%';
+      REC.levelRAF=requestAnimationFrame(tick);
+    }
+    tick();
+  }catch(e){ /* seviye göstergesi şart değil */ }
+}
+
+async function acquireWakeLock(){
+  var pill=$('#wakePill');
+  if(!('wakeLock' in navigator)){ if(pill) pill.textContent='WAKE LOCK: destek yok'; return false; }
+  try{
+    REC.wakeLock = await navigator.wakeLock.request('screen');
+    if(pill) pill.textContent='WAKE LOCK: aktif';
+    REC.wakeLock.addEventListener('release', function(){
+      if(pill) pill.textContent='WAKE LOCK: bırakıldı';
+      if(REC.recorder && REC.recorder.state==='recording' && !REC.stopRequested) logAudioInterruption('WAKE_LOCK_RELEASED','Screen wake lock bırakıldı; ekran kapanması veya sayfa arka plana düşmesi riski var.');
+    });
+    return true;
+  }catch(e){ if(pill) pill.textContent='WAKE LOCK: alınamadı'; return false; }
+}
+async function releaseWakeLock(){
+  try{ if(REC.wakeLock){ await REC.wakeLock.release(); } }catch(e){}
+  REC.wakeLock=null;
+  var pill=$('#wakePill'); if(pill) pill.textContent='WAKE LOCK: —';
+}
+function logAudioInterruption(reason, detail){
+  if(REC.interruptionLogged) return;
+  REC.interruptionLogged=true;
+  var payload={ reason:reason, detail:detail||'', elapsed_ms:REC.startedAt ? (Date.now()-REC.startedAt) : null, needs_review:true };
+  S.audioInterruptions.push({t:new Date().toISOString(), reason:reason, detail:detail||''});
+  addEvent('AUDIO_CAPTURE_INTERRUPTED','L1', payload, 'system', {modality:'audio', source:'browser_pwa', needs_review:true});
+  setAudioStatus('UYARI: Kayıt güveni bozuldu: '+reason+'. Bu oturum insan incelemesi gerektirir.', true);
+}
+document.addEventListener('visibilitychange', function(){
+  if(REC.recorder && REC.recorder.state==='recording'){
+    if(document.hidden){
+      logAudioInterruption('PAGE_HIDDEN','Sayfa arka plana geçti veya ekran kilitlendi; PWA kaydı kesilebilir/donabilir.');
+    }else{
+      acquireWakeLock();
+    }
+  }
+});
+
+async function startAudioRecording(){
+  if(S.session && S.session.consent!=='evet'){
+    alert('Kayıt onayı “alınmadı” görünüyor. Ses kaydı başlatmak için önce rıza kapısında onayı “Alındı” olarak kaydetmelisin.');
+    return;
+  }
+  if(!window.isSecureContext){
+    setAudioStatus('Mikrofon çalışmadı: Bu sayfa güvenli bağlamda değil. HTML’i HTTPS veya localhost üzerinden aç.', true);
+    return;
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder){
+    setAudioStatus('Mikrofon kaydı desteklenmiyor: getUserMedia veya MediaRecorder yok. Chrome kullan ve sayfayı HTTPS/localhost aç.', true);
+    return;
+  }
+  try{
+    REC.chunks=[]; REC.blob=null; REC.interruptionLogged=false; REC.stopRequested=false; WAL.chunkSeq=0;
+    await acquireWakeLock();
+    var constraints={audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}, video:false};
+    REC.stream=await navigator.mediaDevices.getUserMedia(constraints);
+    var mime=pickMime();
+    try{
+      REC.recorder = mime ? new MediaRecorder(REC.stream,{mimeType:mime}) : new MediaRecorder(REC.stream);
+    }catch(e){
+      REC.recorder = new MediaRecorder(REC.stream);
+      mime = REC.recorder.mimeType || 'audio/webm';
+    }
+    REC.startedAt=Date.now();
+    try{ REC.stream.getTracks().forEach(function(t){ t.onended=function(){ if(REC.recorder && REC.recorder.state==='recording' && !REC.stopRequested) logAudioInterruption('MIC_TRACK_ENDED','Mikrofon parçası tarayıcı/sistem tarafından sonlandırıldı.'); }; }); }catch(e){}
+    REC.recorder.onerror=function(e){ logAudioInterruption('MEDIARECORDER_ERROR', (e && e.error && e.error.message) ? e.error.message : 'MediaRecorder hata olayı'); };
+    REC.recorder.ondataavailable=function(e){ if(e.data && e.data.size>0){ REC.chunks.push(e.data); walSaveChunk(e.data); } };
+    REC.recorder.onstop=async function(){
+      clearInterval(REC.timer); REC.timer=null; stopLevelMeter(); releaseWakeLock();
+      $('#recDot').classList.remove('on');
+      $('#audioStart').disabled=false; $('#audioStop').disabled=true;
+      try{ REC.stream.getTracks().forEach(function(t){t.stop();}); }catch(e){}
+      try{ if(REC.audioCtx) REC.audioCtx.close(); }catch(e){}
+      var duration_ms=Date.now()-REC.startedAt;
+      REC.blob=new Blob(REC.chunks,{type:mime||REC.recorder.mimeType||'audio/webm'});
+      if(REC.url) URL.revokeObjectURL(REC.url);
+      REC.url=URL.createObjectURL(REC.blob);
+      $('#audioPlayback').src=REC.url;
+      $('#audioPlayback').classList.remove('hide');
+      $('#audioDownload').disabled=false;
+      setAudioStatus('Kayıt durdu. Ses dosyası lokalde hazır; hash hesaplanıyor…');
+      var h=await blobSha256Hex(REC.blob);
+      S.audio={ mime:REC.blob.type, size_bytes:REC.blob.size, duration_ms:duration_ms, hash:h,
+                source_device:'Samsung Note20 Ultra / browser', created_at:new Date().toISOString() };
+      $('#audioHashBox').classList.remove('hide');
+      $('#audioHashBox').innerHTML='<b>Ses SHA-256</b><br>'+h+'<br>Boyut: '+REC.blob.size+' byte · Süre: '+fmtTime(duration_ms);
+      addEvent('AUDIO_RECORDING_STOPPED','L0',
+        { source_device:S.audio.source_device, mime:S.audio.mime, codec:S.audio.mime, size_bytes:S.audio.size_bytes,
+          duration_ms:S.audio.duration_ms, audio_sha256:S.audio.hash, capture_integrity: REC.interruptionLogged ? 'INTERRUPTED_NEEDS_REVIEW' : 'COMPLETE_NO_INTERRUPTION_DETECTED' },
+        S.session.operator,
+        { modality:'audio', source:'note20_ultra', channel_quality:'single_phone_mic' });
+      setAudioStatus('Ses kaydı L0 olarak zincire eklendi. Dosyayı indirip saklayabilirsin.');
+    };
+    REC.recorder.start(1000);
+    $('#audioStart').disabled=true; $('#audioStop').disabled=false; $('#audioDownload').disabled=true;
+    $('#audioPlayback').classList.add('hide'); $('#audioHashBox').classList.add('hide');
+    $('#recDot').classList.add('on');
+    REC.timer=setInterval(function(){ $('#recTime').textContent=fmtTime(Date.now()-REC.startedAt); }, 250);
+    startLevelMeter(REC.stream);
+    addEvent('AUDIO_RECORDING_STARTED','L0',
+      { source_device:'Samsung Note20 Ultra / browser', mime:mime||REC.recorder.mimeType||'browser_default' },
+      S.session.operator,
+      { modality:'audio', source:'note20_ultra', channel_quality:'single_phone_mic' });
+    setAudioStatus('Kayıt başladı. Telefonu masanın ortasında sabit tut; bildirimleri kapalı bırak.');
+  }catch(err){
+    var name=(err && (err.name||err.message)) ? (err.name+': '+err.message) : String(err);
+    setAudioStatus('Kayıt başlamadı: '+name, true);
+    $('#audioStart').disabled=false; $('#audioStop').disabled=true;
+  }
+}
+function stopAudioRecording(){
+  if(REC.recorder && REC.recorder.state!=='inactive'){
+    REC.stopRequested=true;
+    setAudioStatus('Kayıt durduruluyor…');
+    REC.recorder.stop();
+  }
+}
+function downloadAudio(){
+  if(!REC.blob || !REC.url){ alert('Önce ses kaydı al.'); return; }
+  var ext='webm';
+  if((REC.blob.type||'').indexOf('mp4')>=0) ext='m4a';
+  else if((REC.blob.type||'').indexOf('ogg')>=0) ext='ogg';
+  var a=document.createElement('a');
+  a.href=REC.url;
+  a.download='feam_audio_'+(S.session?S.session.date:new Date().toISOString().slice(0,10))+'.'+ext;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+$('#audioStart').addEventListener('click', startAudioRecording);
+$('#audioStop').addEventListener('click', stopAudioRecording);
+$('#audioDownload').addEventListener('click', downloadAudio);
+
+
+/* ---------- 3 · konuşmacılar & işaretler (manuel) ---------- */
+function spkId(n){ return 'SPEAKER_'+(n<10?'0'+n:''+n); }
+function spk(id){ return S.speakers.filter(function(x){return x.id===id;})[0]; }
+function initSpeakers(){
+  S.speakers=[{id:'SPEAKER_00',label:''},{id:'SPEAKER_01',label:''},{id:'SPEAKER_02',label:''}];
+  S.markers=[];
+  renderSpeakers(); renderTurnBar(); renderTimeline(); renderItemSpeakerOptions();
+}
+function renderSpeakers(){
+  $('#speakerList').innerHTML = S.speakers.map(function(s){
+    if(s.label){
+      return '<div class="spk"><span class="sid">'+s.id+'</span>'+
+        '<span class="lbl">= '+esc(s.label)+'</span>'+
+        '<button data-reassign="'+s.id+'">Değiştir</button></div>';
+    }
+    return '<div class="spk"><span class="sid">'+s.id+'</span>'+
+      '<input type="text" data-lblin="'+s.id+'" placeholder="Gerçek ad (insan onayı ile)">'+
+      '<button data-assign="'+s.id+'">Ata & onayla</button></div>';
+  }).join('');
+  $('#speakerList').querySelectorAll('[data-assign]').forEach(function(b){
+    b.addEventListener('click', function(){ assignLabel(b.getAttribute('data-assign')); });
+  });
+  $('#speakerList').querySelectorAll('[data-reassign]').forEach(function(b){
+    b.addEventListener('click', function(){ var s=spk(b.getAttribute('data-reassign')); s.label=''; renderSpeakers(); renderTurnBar(); renderItemSpeakerOptions(); });
+  });
+}
+function assignLabel(id){
+  var inp=document.querySelector('[data-lblin="'+id+'"]'); if(!inp) return;
+  var v=inp.value.trim(); if(!v){ alert('Önce gerçek adı yazın.'); return; }
+  spk(id).label=v;
+  addEvent('SPEAKER_LABEL_ASSIGNED','L2',
+    { speaker_id:id, assigned_label:v, approved_by:S.session.operator }, S.session.operator);
+  renderSpeakers(); renderTurnBar(); renderItemSpeakerOptions();
+}
+function renderTurnBar(){
+  $('#turnBar').innerHTML = S.speakers.map(function(s){
+    var nm = s.label ? (s.id+' · '+esc(s.label)) : s.id;
+    return '<button data-turn="'+s.id+'">'+nm+' konuşuyor</button>';
+  }).join('');
+  $('#turnBar').querySelectorAll('[data-turn]').forEach(function(b){
+    b.addEventListener('click', function(){ markTurn(b.getAttribute('data-turn')); });
+  });
+}
+function pushMarker(kind,label,ov){ S.markers.push({t:new Date().toISOString(),kind:kind,label:label,ov:!!ov}); renderTimeline(); }
+function markTurn(id){
+  var s=spk(id), nm = s&&s.label ? (id+' · '+s.label) : id;
+  addEvent('PHONE_MARKER_EVENT','L0', { marker_type:'SPEAKER_TURN', speaker_id:id },
+    S.session.operator, { modality:'manual', source:'note20_ultra' });
+  pushMarker('KONUŞMA', nm, false);
+}
+function markOverlap(){
+  addEvent('OVERLAPPED_SPEECH_MARKED','L0',
+    { marker_type:'OVERLAP', speakers:S.speakers.map(function(s){return s.id;}) },
+    S.session.operator, { needs_review:true, modality:'manual' });
+  pushMarker('ÇAKIŞMA','Aynı anda konuşma — insan incelemesi gerekir', true);
+}
+function markMoment(type){
+  addEvent('PHONE_MARKER_EVENT','L0', { marker_type:type }, S.session.operator, { modality:'manual' });
+  pushMarker(type, type+' anı işaretlendi', false);
+}
+function renderTimeline(){
+  var box=$('#timeline');
+  if(!S.markers.length){ box.innerHTML='<p class="empty">Henüz işaret yok.</p>'; return; }
+  box.innerHTML = S.markers.map(function(m){
+    return '<div class="tl"><span class="tt">'+m.t.slice(11,19)+'</span>'+
+      '<span class="tk'+(m.ov?' ov':'')+'">'+esc(m.kind)+'</span>'+
+      '<span class="tx">'+esc(m.label)+'</span></div>';
+  }).join('');
+}
+function renderItemSpeakerOptions(){
+  var sel=$('#ispk'); if(!sel) return;
+  sel.innerHTML = '<option value="">—</option>' + S.speakers.map(function(s){
+    var nm = s.label ? (s.id+' · '+s.label) : s.id;
+    return '<option value="'+s.id+'">'+esc(nm)+'</option>';
+  }).join('');
+}
+$('#addSpeaker').addEventListener('click', function(){
+  S.speakers.push({id:spkId(S.speakers.length), label:''});
+  renderSpeakers(); renderTurnBar(); renderItemSpeakerOptions();
+});
+$('#mkOverlap').addEventListener('click', markOverlap);
+$('#mkKarar').addEventListener('click', function(){ markMoment('KARAR'); });
+$('#mkGorev').addEventListener('click', function(){ markMoment('GOREV'); });
+$('#mkRisk').addEventListener('click', function(){ markMoment('RISK'); });
+
+/* ---------- 2 · not + mahremiyet ---------- */
+var PII = [
+  {k:'IBAN', re:/\bTR\d{2}(?:[ ]?\d){22}\b/g},
+  {k:'TELEFON', re:/\b(?:\+90|0)?[ ]?5\d{2}[ .-]?\d{3}[ .-]?\d{2}[ .-]?\d{2}\b/g},
+  {k:'TUTAR', re:/(?:[₺$€]\s?\d[\d.,]*|\b\d{1,3}(?:[.\s]\d{3})*(?:,\d+)?\s?(?:TL|lira|USD|EUR)\b)/gi},
+  {k:'E-POSTA', re:/\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g},
+  {k:'MÜŞTERİ/SÖZLEŞME', re:/\b(?:müşteri|sözleşme|cari|tedarikçi)\b\S*/gi}
+];
+function scanPII(text){
+  var found=[];
+  PII.forEach(function(p){
+    var m, seen={};
+    p.re.lastIndex=0;
+    while((m=p.re.exec(text))){
+      var hit=m[0].trim(); if(!hit||seen[hit]) continue; seen[hit]=1;
+      found.push({k:p.k, v:hit});
+    }
+  });
+  return found;
+}
+function renderPII(){
+  var box=$('#piiFlags'), found=scanPII($('#note').value);
+  if(!found.length){ box.innerHTML='<p class="empty">Mahremiyet taraması: henüz işaret yok.</p>'; return; }
+  box.innerHTML = found.map(function(f){
+    return '<div class="flag"><span class="k">'+f.k+'</span><span class="v">'+esc(f.v)+'</span></div>';
+  }).join('') +
+  '<p class="empty" style="margin-top:4px">Bu işaretler lokaldir; dışarı gönderilmez. Mühürden önce kontrol edin.</p>';
+}
+$('#note').addEventListener('input', renderPII);
+$('#saveNote').addEventListener('click', function(){
+  var t=$('#note').value.trim();
+  if(!t){ alert('Önce bir not yazın.'); return; }
+  var pii=scanPII(t);
+  addEvent('NOTE_DRAFTED','L0',{ text:t, pii_flags:pii }, S.session.operator);
+  if(pii.length){
+    addEvent('PII_FLAGGED','L1',{ count:pii.length, kinds:pii.map(function(f){return f.k;}) }, 'system');
+  }
+  flash($('#saveNote'),'Kaydedildi ✓');
+});
+
+/* ---------- 3 · karar/görev/risk ---------- */
+$('#itype').addEventListener('change', function(){
+  $('#taskExtra').style.display = $('#itype').value==='GOREV' ? 'flex' : 'none';
+});
+$('#taskExtra').style.display='none';
+
+function addItemObj(type,text,owner,due,speaker){
+  var it={ id:nid(), type:type, text:text, owner:owner||'', due:due||'', speaker:speaker||'', status:'PROPOSED' };
+  S.items.push(it);
+  addEvent('ITEM_PROPOSED','L1',
+    { item_id:it.id, type:it.type, text:it.text, owner:it.owner, due:it.due }, 'system',
+    it.speaker ? { attributed_speaker:it.speaker } : {});
+  renderItems();
+}
+$('#addItem').addEventListener('click', function(){
+  var txt=$('#itext').value.trim(); if(!txt){ alert('İçerik boş.'); return; }
+  addItemObj($('#itype').value, txt, $('#iowner').value.trim(), $('#idue').value.trim(), $('#ispk').value);
+  $('#itext').value=''; $('#iowner').value=''; $('#idue').value=''; $('#ispk').value='';
+});
+var ITEM_RULES=[
+  {type:'KARAR', re:/(karar|kararlaştır|onaylan|mutabık|kabul edil|netleş)/i},
+  {type:'GOREV', re:/(yapacak|üstlen|sorumlu|teslim|hazırlay|son tarih|deadline|iletecek|gönderecek)/i},
+  {type:'RISK',  re:/(risk|tehlike|sorun|gecik|ceza|eksik|belirsiz|açık değil|bağımlı)/i}
+];
+$('#scanItems').addEventListener('click', function(){
+  var lines=$('#note').value.split(/[\n.;]+/).map(function(s){return s.trim();}).filter(function(s){return s.length>6;});
+  var n=0;
+  lines.forEach(function(ln){
+    for(var i=0;i<ITEM_RULES.length;i++){
+      if(ITEM_RULES[i].re.test(ln)){ addItemObj(ITEM_RULES[i].type, ln, '', '', ''); n++; break; }
+    }
+  });
+  flash($('#scanItems'), n? (n+' öneri eklendi') : 'Öneri bulunamadı');
+});
+function approveItem(id){
+  var it=S.items.filter(function(x){return x.id===id;})[0]; if(!it||it.status==='APPROVED') return;
+  it.status='APPROVED';
+  addEvent('ITEM_APPROVED','L2',
+    { item_id:it.id, type:it.type, text:it.text, owner:it.owner, due:it.due,
+      attributed_speaker:it.speaker||null }, S.session.operator);
+  renderItems();
+}
+function renderItems(){
+  var box=$('#itemList');
+  if(!S.items.length){ box.innerHTML='<p class="empty">Henüz kalem yok.</p>'; return; }
+  box.innerHTML = S.items.map(function(it){
+    var bits=[];
+    if(it.type==='GOREV' && (it.owner||it.due)) bits.push('Sorumlu: '+(esc(it.owner)||'—')+' · Son tarih: '+(esc(it.due)||'—'));
+    if(it.speaker){ var sp=spk(it.speaker); bits.push('Konuşmacı: '+esc(it.speaker)+(sp&&sp.label?' ('+esc(sp.label)+')':'')); }
+    var meta = bits.length ? '<div class="meta">'+bits.join(' · ')+'</div>' : '';
+    var btn = it.status==='APPROVED' ? '' :
+      '<div class="act"><button data-ap="'+it.id+'">İnsan onayı ver</button></div>';
+    return '<div class="item"><div class="top">'+
+      '<span class="ty ty-'+it.type+'">'+it.type+'</span>'+
+      '<span class="st st-'+it.status+'">'+(it.status==='APPROVED'?'ONAYLI · L2':'ÖNERİ · L1')+'</span>'+
+      '</div><div class="txt">'+esc(it.text)+'</div>'+meta+btn+'</div>';
+  }).join('');
+  box.querySelectorAll('[data-ap]').forEach(function(b){
+    b.addEventListener('click', function(){ approveItem(+b.getAttribute('data-ap')); });
+  });
+}
+
+/* ---------- 4 · terim yönetişimi ---------- */
+(function initGloss(){
+  $('#glossary').innerHTML = GLOSSARY.map(function(g){ return '<span class="chip">'+esc(g.term)+'</span>'; }).join('');
+  $('#ttgt').innerHTML = GLOSSARY.map(function(g){ return '<option value="'+esc(g.term)+'">'+esc(g.term)+'</option>'; }).join('');
+})();
+function proposeTerm(src,tgt,reason){
+  var t={ id:nid(), source:src, target:tgt, reason:reason||'FEAM kilit terimi', status:'WAITING_HUMAN_APPROVAL' };
+  S.terms.push(t);
+  addEvent('TERM_CORRECTION_PROPOSED','L1',
+    { source_text:t.source, corrected_term:t.target, reason:t.reason, status:t.status }, 'system');
+  renderTerms();
+}
+$('#addTerm').addEventListener('click', function(){
+  var s=$('#tsrc').value.trim(); if(!s){ alert('Ham/yanlış metni girin.'); return; }
+  proposeTerm(s, $('#ttgt').value, 'FEAM kilit terimi'); $('#tsrc').value='';
+});
+$('#scanTerm').addEventListener('click', function(){
+  var text=$('#note').value.toLowerCase(), n=0;
+  GLOSSARY.forEach(function(g){
+    g.wrong.forEach(function(w){
+      if(text.indexOf(w.toLowerCase())>=0){
+        var dup=S.terms.some(function(t){return t.source.toLowerCase()===w.toLowerCase();});
+        if(!dup){ proposeTerm(w, g.term, 'Notta uyuşmazlık tespit edildi'); n++; }
+      }
+    });
+  });
+  flash($('#scanTerm'), n? (n+' uyuşmazlık') : 'Uyuşmazlık yok');
+});
+function approveTerm(id){
+  var t=S.terms.filter(function(x){return x.id===id;})[0]; if(!t||t.status==='APPROVED') return;
+  t.status='APPROVED';
+  addEvent('TERM_CORRECTION_APPROVED','L2',
+    { source_text:t.source, term:t.target, approved_by:S.session.operator }, S.session.operator);
+  renderTerms();
+}
+function renderTerms(){
+  var box=$('#termList');
+  if(!S.terms.length){ box.innerHTML='<p class="empty">Henüz terim düzeltmesi yok.</p>'; return; }
+  box.innerHTML = S.terms.map(function(t){
+    var btn = t.status==='APPROVED' ? '' :
+      '<div class="act"><button data-tp="'+t.id+'">Terimi onayla</button></div>';
+    return '<div class="item"><div class="top">'+
+      '<span class="ty ty-GOREV">TERİM</span>'+
+      '<span class="st st-'+(t.status==='APPROVED'?'APPROVED':'PROPOSED')+'">'+
+      (t.status==='APPROVED'?'ONAYLI · L2':'ÖNERİ · L1')+'</span></div>'+
+      '<div class="txt">“'+esc(t.source)+'” → <b style="color:var(--brass)">'+esc(t.target)+'</b></div>'+
+      '<div class="meta">'+esc(t.reason)+'</div>'+btn+'</div>';
+  }).join('');
+  box.querySelectorAll('[data-tp]').forEach(function(b){
+    b.addEventListener('click', function(){ approveTerm(+b.getAttribute('data-tp')); });
+  });
+}
+
+/* ---------- 5 · kapalı çeviri kapısı ---------- */
+$('#gateBtn').addEventListener('click', function(){
+  var w=$('#gateWhy'); w.style.display = w.style.display==='block'?'none':'block';
+});
+
+/* ---------- 6 · fiş + mühür ---------- */
+function approvedItems(t){ return S.items.filter(function(i){return i.type===t && i.status==='APPROVED';}); }
+function renderReceipt(){
+  if(!S.session) return;
+  var s=S.session;
+  var consentHtml = s.consent==='evet'
+    ? '<span class="yes">Evet</span>' : '<span class="no">Hayır</span>';
+  function listSec(title,arr,fmt){
+    if(!arr.length) return '<div class="sec"><b>'+title+'</b><span class="empty">— yok —</span></div>';
+    return '<div class="sec"><b>'+title+'</b><ol>'+arr.map(fmt).join('')+'</ol></div>';
+  }
+  var dec=listSec('Alınan kararlar (L2)', approvedItems('KARAR'), function(i){return '<li>'+esc(i.text)+'</li>';});
+  var tsk=listSec('Aksiyonlar (L2)', approvedItems('GOREV'), function(i){
+    return '<li>'+esc(i.text)+(i.owner||i.due?' <i>('+(esc(i.owner)||'—')+' · '+(esc(i.due)||'—')+')</i>':'')+'</li>';});
+  var rsk=listSec('Riskler (L2)', approvedItems('RISK'), function(i){return '<li>'+esc(i.text)+'</li>';});
+  var trm=S.terms.filter(function(t){return t.status==='APPROVED';});
+  var trmSec=listSec('Onaylı terim düzeltmeleri (L2)', trm, function(t){
+    return '<li>“'+esc(t.source)+'” → <b>'+esc(t.target)+'</b></li>';});
+  var noteEv = S.chain.filter(function(e){return e.event_type==='NOTE_DRAFTED';}).slice(-1)[0];
+  var pii = noteEv ? (noteEv.payload.pii_flags||[]) : [];
+  var piiSec = pii.length
+    ? '<div class="sec"><b>Mahremiyet işaretleri</b><ul>'+pii.map(function(f){return '<li>'+esc(f.k)+': '+esc(f.v)+'</li>';}).join('')+'</ul></div>'
+    : '<div class="sec"><b>Mahremiyet işaretleri</b><span class="empty">— işaret yok —</span></div>';
+  var spkSec = S.speakers.length
+    ? '<div class="sec"><b>Konuşmacılar</b><ul>'+S.speakers.map(function(sp){
+        return '<li>'+esc(sp.id)+(sp.label?' = <b>'+esc(sp.label)+'</b> <i>(insan onaylı)</i>':' <i>(etiketlenmedi)</i>')+'</li>';}).join('')+'</ul></div>'
+    : '';
+  var ovl = S.markers.filter(function(m){return m.ov;}).length;
+  var mkSec = '<div class="sec"><b>İşaretler</b><span>'+S.markers.length+' manuel işaret · '+ovl+' çakışma (insan incelemesi)</span></div>';
+  var intSec = S.audioInterruptions && S.audioInterruptions.length
+    ? '<div class="sec"><b>Ses yakalama kesinti uyarıları</b><ul>'+S.audioInterruptions.map(function(x){return '<li>'+esc(x.reason)+': '+esc(x.detail)+'</li>';}).join('')+'</ul></div>'
+    : '<div class="sec"><b>Ses yakalama kesinti uyarıları</b><span class="empty">— sezilen kesinti yok —</span></div>';
+
+  var aud = S.audio;
+  var audioSec = aud
+    ? '<div class="sec"><b>Ses şahidi (L0)</b><ul><li>Kaynak: '+esc(aud.source_device)+'</li><li>MIME: '+esc(aud.mime||'—')+'</li><li>Boyut: '+esc(aud.size_bytes||0)+' byte · Süre: '+fmtTime(aud.duration_ms||0)+'</li><li>SHA-256: <span style="font-family:var(--mono);word-break:break-all">'+esc(aud.hash)+'</span></li></ul></div>'
+    : '<div class="sec"><b>Ses şahidi (L0)</b><span class="empty">— henüz ses kaydı yok —</span></div>';
+  var last = S.chain.length ? S.chain[S.chain.length-1].current_hash : GENESIS;
+
+  $('#receipt').innerHTML =
+    '<h3>FEAM Toplantı Şahit Fişi</h3>'+
+    '<p class="rtag">Toplantı notu değil — kararın rızası, mahremiyeti, insan onayı ve değişmezliği.</p>'+
+    '<div class="field"><span class="lk">Toplantı</span><span class="lv">'+esc(s.meeting)+'</span></div>'+
+    '<div class="field"><span class="lk">Tarih</span><span class="lv">'+esc(s.date)+'</span></div>'+
+    '<div class="field"><span class="lk">Katılımcılar</span><span class="lv">'+(esc(s.participants.join(', '))||'—')+'</span></div>'+
+    '<div class="field"><span class="lk">Kayıt onayı</span><span class="lv">'+consentHtml+'</span></div>'+
+    '<div class="field"><span class="lk">Mühür yetkilisi</span><span class="lv">'+esc(s.operator)+'</span></div>'+
+    spkSec+mkSec+intSec+audioSec+dec+tsk+rsk+trmSec+piiSec+
+    '<div class="hashline">Şahit zinciri uzunluğu: '+S.chain.length+' halka · Son hash:<br>'+last+
+    (S.sealed?' <br><b style="color:#2e7d52">● İNSAN MÜHRÜ UYGULANDI</b>':' <br><span class="no">○ Henüz mühürlenmedi</span>')+'</div>';
+}
+$('#sealBtn').addEventListener('click', function(){
+  if(S.sealed) return;
+  var snapshot = {
+    meeting:S.session.meeting, date:S.session.date, operator:S.session.operator,
+    consent:S.session.consent,
+    speakers:S.speakers.map(function(sp){return {id:sp.id, label:sp.label||null};}),
+    marker_count:S.markers.length,
+    overlap_count:S.markers.filter(function(m){return m.ov;}).length,
+    audio:S.audio ? { source_device:S.audio.source_device, mime:S.audio.mime, codec:S.audio.mime,
+      size_bytes:S.audio.size_bytes, duration_ms:S.audio.duration_ms,
+      audio_sha256:S.audio.hash, capture_integrity:(S.audioInterruptions&&S.audioInterruptions.length)?'INTERRUPTED_NEEDS_REVIEW':'COMPLETE_NO_INTERRUPTION_DETECTED' } : null,
+    audio_interruptions:S.audioInterruptions,
+    decisions:approvedItems('KARAR').map(function(i){return i.text;}),
+    actions:approvedItems('GOREV').map(function(i){return {text:i.text,owner:i.owner,due:i.due,speaker:i.speaker||null};}),
+    risks:approvedItems('RISK').map(function(i){return i.text;}),
+    approved_terms:S.terms.filter(function(t){return t.status==='APPROVED';}).map(function(t){return {source:t.source,term:t.target};}),
+    chain_length_before_seal:S.chain.length
+  };
+  var ev=addEvent('RECEIPT_SEALED','L2', snapshot, S.session.operator);
+  S.sealed=true;
+  $('#wid').textContent = ev.current_hash.slice(0,16)+'…';
+  var st=$('#stamp'); st.classList.add('on','anim');
+  setTimeout(function(){ st.classList.remove('anim'); }, 500);
+  $('#exportBtn').disabled=false; $('#printBtn').disabled=false; $('#sealBtn').disabled=true;
+  renderReceipt();
+});
+
+/* ---------- export / print ---------- */
+$('#exportBtn').addEventListener('click', function(){
+  var out = {
+    product:'FEAM Toplantı Şahidi v0.2.2 PHONE PWA',
+    canonical_decision:'Çekirdek lokal, denetlenebilir, insan mühürlü. Bulut çeviri yalnızca açık rızalı, opsiyonel, L3/EXTERNAL_DERIVED türev çıktıdır. Moat = kararın rızası, mahremiyeti, insan onayı ve değişmezliği.',
+    witness_classes:{
+      L0:'LOCAL_RAW — yerel ses/metin/insan girdisi/manuel marker; en güçlü şahit',
+      L1:'LOCAL_DERIVED — yerel makine türevi/öneri (diarization, overlap, mahremiyet, terim, karar/görev/risk) (advisory)',
+      L2:'HUMAN_COMMITTED — insan onaylı kesin kayıt (karar, görev, konuşmacı etiketi, mühürlü fiş)',
+      L3:'EXTERNAL_DERIVED/ADVISORY — bulut/harici türev; asla L0/L2 ile eş seviye değil (v0: kapalı)'
+    },
+    taxonomy_note:'Tek kanonik güven ekseni: L0–L3. Konuşmacı, overlap, kaynak, kanal kalitesi, güven skoru, inceleme ihtiyacı yeni şahit sınıfı değil; olay metadata\u0027sıdır. Otomatik diarization (pyannote/WhisperX) v0.1/laptop adımıdır ve makine türevi olduğu için L1\u0027dir.',
+    event_metadata_fields:['modality','source','speaker_id','confidence','needs_review','channel_quality','attributed_speaker'],
+    session:S.session,
+    speakers:S.speakers,
+    markers:S.markers,
+    audio:S.audio,
+    receipt_sealed:S.sealed,
+    chain:S.chain
+  };
+  var blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='feam_sahit_'+(S.session.date||'kayit')+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},1500);
+});
+$('#printBtn').addEventListener('click', function(){ window.print(); });
+
+/* ---------- 7 · zincir + doğrulama ---------- */
+var EVENT_TR={
+  SESSION_OPENED:'Oturum açıldı', NOTE_DRAFTED:'Not taslağı', PII_FLAGGED:'Mahremiyet işareti',
+  ITEM_PROPOSED:'Kalem önerildi', ITEM_APPROVED:'Kalem onaylandı',
+  TERM_CORRECTION_PROPOSED:'Terim önerildi', TERM_CORRECTION_APPROVED:'Terim onaylandı',
+  AUDIO_RECORDING_STARTED:'Ses kaydı başladı', AUDIO_RECORDING_STOPPED:'Ses kaydı durdu', AUDIO_CAPTURE_INTERRUPTED:'Ses yakalama kesintisi',
+  PHONE_MARKER_EVENT:'Anlık işaret', OVERLAPPED_SPEECH_MARKED:'Çakışma işareti',
+  SPEAKER_LABEL_ASSIGNED:'Konuşmacı etiketi', RECEIPT_SEALED:'Fiş mühürlendi'
+};
+function chainSummary(ev){
+  var p=ev.payload;
+  switch(ev.event_type){
+    case 'SESSION_OPENED': return esc(p.meeting)+' · onay: '+esc(p.consent);
+    case 'NOTE_DRAFTED': return esc(p.text.slice(0,90))+(p.text.length>90?'…':'');
+    case 'PII_FLAGGED': return p.count+' işaret: '+esc((p.kinds||[]).join(', '));
+    case 'ITEM_PROPOSED': case 'ITEM_APPROVED': return '['+esc(p.type)+'] '+esc(p.text.slice(0,80));
+    case 'TERM_CORRECTION_PROPOSED': return '“'+esc(p.source_text)+'” → '+esc(p.corrected_term);
+    case 'TERM_CORRECTION_APPROVED': return '“'+esc(p.source_text)+'” → '+esc(p.term)+' (onay: '+esc(p.approved_by)+')';
+    case 'AUDIO_RECORDING_STARTED': return 'Mikrofon açıldı · '+esc(p.mime||'browser_default');
+    case 'AUDIO_RECORDING_STOPPED': return 'Ses hash: '+esc((p.audio_sha256||'').slice(0,16))+'… · '+esc(p.size_bytes)+' byte · '+esc(p.capture_integrity||'');
+    case 'AUDIO_CAPTURE_INTERRUPTED': return 'Kesinti: '+esc(p.reason||'')+' · insan incelemesi gerekir';
+    case 'PHONE_MARKER_EVENT': return p.marker_type==='SPEAKER_TURN' ? ('Konuşmacı: '+esc(p.speaker_id)) : (esc(p.marker_type)+' anı işaretlendi');
+    case 'OVERLAPPED_SPEECH_MARKED': return 'Aynı anda konuşma · insan incelemesi gerekir';
+    case 'SPEAKER_LABEL_ASSIGNED': return esc(p.speaker_id)+' = '+esc(p.assigned_label)+' (onay: '+esc(p.approved_by)+')';
+    case 'RECEIPT_SEALED': return esc(p.decisions.length)+' karar · '+esc(p.actions.length)+' aksiyon · '+esc(p.risks.length)+' risk';
+  }
+  return '';
+}
+function renderChain(){
+  var ul=$('#chain');
+  ul.innerHTML = S.chain.map(function(ev){
+    var bad = ev._bad ? ' bad' : (ev._checked ? ' ok' : '');
+    var sealed = ev.event_type==='RECEIPT_SEALED' ? ' sealed' : '';
+    return '<li><span class="node '+ev.witness_class+bad+'"></span>'+
+      '<div class="evt'+sealed+'">'+
+        '<div class="eh"><span class="pill '+ev.witness_class+'"><span class="dot"></span>'+ev.witness_class+'</span>'+
+        '<span class="etype">#'+ev.seq+' · '+(EVENT_TR[ev.event_type]||ev.event_type)+'</span>'+
+        '<span class="when">'+esc(ev.timestamp.slice(11,19))+'</span></div>'+
+        '<div class="ed">'+chainSummary(ev)+'</div>'+
+        '<div class="hsh">prev '+ev.previous_hash.slice(0,12)+'… → <b>'+ev.current_hash.slice(0,16)+'…</b></div>'+
+      '</div></li>';
+  }).join('');
+}
+$('#verifyBtn').addEventListener('click', function(){
+  var ok=true, prev=GENESIS;
+  for(var i=0;i<S.chain.length;i++){
+    var ev=S.chain[i], linkOk=(ev.previous_hash===prev);
+    var recomputed=sha256(prev+canonical(bodyOf(ev)));
+    var hashOk=(recomputed===ev.current_hash);
+    ev._bad=!(linkOk&&hashOk); ev._checked=true;
+    if(ev._bad) ok=false;
+    prev=ev.current_hash;
+  }
+  renderChain();
+  var v=$('#verdict');
+  if(S.chain.length===0){ v.className='verdict fail'; v.textContent='Zincir boş.'; return; }
+  if(ok){ v.className='verdict ok'; v.textContent='✓ Zincir bütün. '+S.chain.length+' halkanın tamamı doğrulandı; hiçbir kayıt sonradan değişmemiş.'; }
+  else { v.className='verdict fail'; v.textContent='✗ Zincir kırık. En az bir halka kurcalanmış — kırmızı düğümlere bakın.'; }
+});
+$('#tamperBtn').addEventListener('click', function(){
+  if(!S.chain.length){ alert('Önce birkaç olay üretin.'); return; }
+  S.chain[0].payload._tampered = 'gizli değişiklik';
+  var v=$('#verdict'); v.className='verdict fail';
+  v.textContent='1. halkanın içeriği elle değiştirildi. Şimdi “Zinciri doğrula”ya basın — kırılmayı yakalamalı.';
+});
+
+/* ---------- yardımcı ---------- */
+function flash(btn,msg){
+  var old=btn.textContent; btn.textContent=msg; btn.disabled=true;
+  setTimeout(function(){ btn.textContent=old; btn.disabled=false; }, 1100);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(e){ console.log('SW kayıt hatası', e); });
+  });
+}
+</script>
+</body>
+</html>
