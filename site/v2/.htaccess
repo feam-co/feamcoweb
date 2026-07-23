@@ -1,4 +1,4 @@
-﻿# Staging — noindex
+# FEAM.co /v2 staging — indexing kapali
 <IfModule mod_headers.c>
-    Header set X-Robots-Tag "noindex, nofollow"
+    Header always set X-Robots-Tag "noindex, nofollow"
 </IfModule>

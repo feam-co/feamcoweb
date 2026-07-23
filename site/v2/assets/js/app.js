@@ -5,7 +5,7 @@
  if(toggle&&nav){toggle.addEventListener('click',()=>{const o=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(o));});}
  qa('.nav-group>button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('open')));
  // Sector panel
- const sectors={}; fetch('/assets/data/sectors.json').then(r=>r.json()).then(d=>d.forEach(s=>sectors[s.id]=s)).catch(()=>{});
+ const sectors={}; fetch('/v2/assets/data/sectors.json').then(r=>r.json()).then(d=>d.forEach(s=>sectors[s.id]=s)).catch(()=>{});
  const panel=q('#sector-panel');
  qa('.sector-card').forEach(card=>card.addEventListener('click',()=>{
    const s=sectors[card.dataset.sector]; if(!s||!panel)return;
