@@ -1,0 +1,50 @@
+[
+  {
+    "id": "vericore",
+    "name": "VeriCore",
+    "status": "FLAGSHIP PRODUCT",
+    "desc": "Kritik kararların kural, insan, icra, sonuç ve kanıt fişi altyapısı."
+  },
+  {
+    "id": "feamos",
+    "name": "FEAM OS",
+    "status": "PLATFORM DIRECTION",
+    "desc": "Saha, para, müşteri, karar, öğrenme ve ajan operasyonları için geniş işletim katmanı."
+  },
+  {
+    "id": "witness",
+    "name": "FEAM Şahit",
+    "status": "LAB PROTOTYPE",
+    "desc": "Rıza, lokal kayıt, insan onayı ve toplantı karar fişi."
+  },
+  {
+    "id": "climate",
+    "name": "İklimGuard",
+    "status": "LAB PROTOTYPE",
+    "desc": "Kümes/tesis iklimi, sensör, manuel-otomatik kontrol ve fiziksel icra izi."
+  },
+  {
+    "id": "pocket",
+    "name": "Pocket Intelligence Node",
+    "status": "LAB PROTOTYPE",
+    "desc": "Kaynak üretimi, transkript/OCR, insan seçimi ve karar kaydı."
+  },
+  {
+    "id": "atelier",
+    "name": "Coding Atelier",
+    "status": "INTERNAL OPERATING SYSTEM",
+    "desc": "Ajan görevleri, izinli yollar, test, review ve üretim disiplini."
+  },
+  {
+    "id": "farm",
+    "name": "Farm Mizan / IoT",
+    "status": "RESEARCH PROTOTYPE",
+    "desc": "Saha olayları, offline queue, edge kayıt ve fiziksel şahitlik."
+  },
+  {
+    "id": "replay",
+    "name": "VeriCore Synthetic Replay",
+    "status": "SYNTHETIC VALIDATION",
+    "desc": "Yedi alan, 35 vaka ve 13 adım üzerinden karar kanıt yönteminin yeniden üretimi."
+  }
+]

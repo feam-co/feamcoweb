@@ -1,0 +1,56 @@
+[
+  {
+    "id": "bank",
+    "title": "Bankacılık ve Finans",
+    "desc": "Ödeme, kredi, limit, ikinci onay ve dijital işlem zincirleri",
+    "decisions": "Ödeme, kredi limiti, RPA/BPM ikinci onay, kart itirazı, yatırım komitesi.",
+    "gap": "Karar, onay, icra ve sonuç farklı sistemlerde kalır.",
+    "example": "Ödeme onaylandı; robot bankaya gönderdi mi, banka kabul etti mi, onay gerçekten işlemden önce miydi?",
+    "start": "İkinci onaylı operasyon akışı"
+  },
+  {
+    "id": "factory",
+    "title": "Fabrika ve Sanayi",
+    "desc": "Kalite, bakım, üretim, güvenlik ve makine müdahale kararları",
+    "decisions": "Parti kabul/ret, bakım önceliği, parametre değişimi, güvenlik durdurması.",
+    "gap": "Sensör, tolerans, operatör müdahalesi ve gerçek üretim sonucu ayrışır.",
+    "example": "Makine kritik sıcaklık nedeniyle durdu; sensör kalibrasyonu güncel miydi ve parti karantinaya alındı mı?",
+    "start": "Kalite kabul veya bakım kararı"
+  },
+  {
+    "id": "commerce",
+    "title": "E-Ticaret ve Perakende",
+    "desc": "Fiyat, indirim, stok, sipariş, iade ve tedarikçi aksiyonları",
+    "decisions": "Fiyat/indirim, stok, refund, vendor ve IBAN değişikliği.",
+    "gap": "AI önerisi ile mağazaya yansıyan değişiklik ve gerçek ticari sonuç bağlanamaz.",
+    "example": "AI %25 indirim önerdi; kârlılık kuralı, insan onayı, mağaza fiyatı ve sipariş sonucu aynı zincirde mi?",
+    "start": "Fiyat veya iade aksiyonu"
+  },
+  {
+    "id": "ai",
+    "title": "Kurumsal AI Ajanları",
+    "desc": "Ajan araç kullanımı, yetki sınırı, insan onayı ve execution izi",
+    "decisions": "E-posta, CRM değişikliği, dosya yazma, deploy, teklif ve ödeme aracı çağrısı.",
+    "gap": "Teknik tool izni kurumsal yetki sanılır; insan ve sonuç izi eksik kalır.",
+    "example": "Ajan e-posta gönderebilir; fakat bu müşteriye ticari taahhüt vermeye yetkili mi?",
+    "start": "Tek ajan + tek kritik tool"
+  },
+  {
+    "id": "public",
+    "title": "Kamu, Teşvik ve Satın Alma",
+    "desc": "Tahsis, değerlendirme, ihale, komite ve kamu kaynağı kararları",
+    "decisions": "Hibe, teşvik, ihale, satın alma, hakediş ve yatırım komitesi.",
+    "gap": "Kriter, belge, komite kararı, tahsis ve uygulama sonucu tek zincirde değildir.",
+    "example": "Kaynak tahsis edildi; hangi kriter ve belgeye dayanıldı, kim inceledi ve sonuç ne oldu?",
+    "start": "Tek değerlendirme dosyası"
+  },
+  {
+    "id": "field",
+    "title": "Saha ve Teknik Operasyonlar",
+    "desc": "Teklif, hakediş, malzeme, bakım, uygulama ve kabul kararları",
+    "decisions": "Keşif, malzeme değişikliği, bakım, saha kabulü, hakediş.",
+    "gap": "Belge, yetki, sahadaki gerçek uygulama ve mali sonuç ayrışır.",
+    "example": "Malzeme değişikliğine kim izin verdi, sahada ne kullanıldı, hakedişe ne girdi, iş kabul edildi mi?",
+    "start": "Malzeme değişikliği veya bakım"
+  }
+]
