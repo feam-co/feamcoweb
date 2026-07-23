@@ -1,0 +1,20 @@
+﻿
+# === FEAM SECURITY QUARANTINE 2026-07-23 ===
+<Files "mobile.html">
+    Require all denied
+</Files>
+<Files "relay.php">
+    Require all denied
+</Files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteRule ^feam/mobile\.html$ - [F,L]
+    RewriteRule ^feam/relay\.php$ - [F,L]
+    RewriteRule ^iot/komut\.php$ - [F,L]
+    RewriteRule ^iot/veri\.php$ - [F,L]
+    RewriteRule ^legal/patent-hazirlik-v01\.html$ - [F,L]
+    RewriteRule ^legal/telif-arsiv-v05\.html$ - [F,L]
+</IfModule>
+# === END SECURITY QUARANTINE ===
