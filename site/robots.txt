@@ -1,4 +1,3 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://feam.co/sitemap.xml
+Disallow: /
+# STAGING candidate — production öncesi noindex

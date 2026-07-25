@@ -1,4 +1,3 @@
-﻿
 # === FEAM SECURITY QUARANTINE 2026-07-23 ===
 <Files "mobile.html">
     Require all denied
@@ -9,7 +8,6 @@
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
     RewriteRule ^feam/mobile\.html$ - [F,L]
     RewriteRule ^feam/relay\.php$ - [F,L]
     RewriteRule ^iot/komut\.php$ - [F,L]
