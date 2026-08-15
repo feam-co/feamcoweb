@@ -218,6 +218,10 @@ p { color: var(--mut); }
 }
 .scene-node small, .scene-caption span { color: #68757c; }
 
+/* Keep the proof node and the explanatory caption in separate vertical bands. */
+.hero-scene .node-proof { bottom: 16%; }
+.hero-scene .scene-caption { bottom: -5%; }
+
 .trace-visual,
 .capability,
 .decision-stage,
@@ -425,10 +429,47 @@ p { color: var(--mut); }
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 1050px) {
+  .corporate-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+  }
+
+  .hero-copy h1 {
+    max-width: 15ch;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .hero-scene {
+    width: 100%;
+    max-width: 780px;
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 820px) {
   .main-nav.open { background: rgba(255,253,248,.98); }
   .main-nav > a, .nav-group > button { color: #26363e; }
   .nav-pop { box-shadow: none; background: rgba(236,239,232,.7); }
+
+  .corporate-hero {
+    padding-top: 3.5rem;
+    gap: 2.5rem;
+  }
+
+  .hero-copy h1 {
+    max-width: none;
+    font-size: clamp(2.55rem, 11.5vw, 4.2rem);
+    line-height: 1.03;
+  }
+
+  .hero-scene .node-proof { bottom: 22%; }
+  .hero-scene .scene-caption {
+    bottom: -8%;
+    max-width: min(280px, 74vw);
+  }
 }
 
 @media (max-width: 520px) {
