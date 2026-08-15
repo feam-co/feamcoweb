@@ -18,6 +18,14 @@
   --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
   --shadow: 0 24px 70px rgba(34, 43, 47, .11);
   --shadow-soft: 0 12px 36px rgba(34, 43, 47, .075);
+  /* Semantic colour contract — do not repurpose by decoration. */
+  --state-info: #135f69;
+  --state-success: #0d6b61;
+  --state-attention: #7d5a1d;
+  --state-review: #5c527b;
+  --state-danger: #963f47;
+  --state-neutral: #55636b;
+  --focus-ring: #0d6974;
 }
 
 html { color-scheme: light; }
@@ -42,6 +50,11 @@ body::before {
 }
 
 ::selection { background: rgba(23, 107, 117, .2); color: #0e272c; }
+
+:focus-visible {
+  outline: 3px solid rgba(13, 105, 116, .34);
+  outline-offset: 3px;
+}
 
 h1, h2, h3 {
   color: var(--ink);
@@ -98,7 +111,7 @@ p { color: var(--mut); }
 }
 
 .brand img { filter: none; }
-.brand small, .brand-tagline { color: #536069; }
+.brand small, .brand-tagline { color: #4f5e66 !important; }
 
 .main-nav > a,
 .nav-group > button {
@@ -131,16 +144,35 @@ p { color: var(--mut); }
 
 .section-kicker,
 .hero-copy .kicker,
-.maturity,
-.result-label,
 .value-grid span,
-.status-legend span,
-.review-grid span,
 .os-layers span,
-.proof-metrics span,
-.schema-node + i {
-  color: var(--teal);
+.proof-metrics span {
+  color: var(--state-info);
 }
+
+/* Semantic states: information, success, attention, review, danger, neutral. */
+.result-label,
+.ledger-row .good,
+.chip.linked,
+.receipt-graph .r.linked,
+.evidence-card.current > span,
+.boundary-formulas span:not(.no) { color: var(--state-success); }
+
+.maturity,
+.ledger-row .warn,
+.evidence-card.future > span,
+.receipt-head em,
+.constitution-card > span,
+.status-legend span { color: var(--state-attention); }
+
+.chip.review,
+.review-grid span { color: var(--state-review); }
+
+.not-grid span,
+.boundary-formulas span.no { color: var(--state-danger); }
+
+.chip.unlinked,
+.receipt-graph .r.open { color: var(--state-neutral); }
 
 .hero-copy .kicker span { background: var(--teal); }
 .hero-copy h1 em { color: #8b641f; font-style: normal; }
@@ -288,11 +320,19 @@ p { color: var(--mut); }
 
 .constitution-preview blockquote,
 .constitution-full blockquote,
+.cause-story blockquote,
 .founder-story blockquote,
 .founder-preview blockquote,
 .standard-roadmap blockquote {
-  color: #4d482f;
+  color: #29383f;
   border-color: var(--gold);
+}
+
+.cause-story blockquote {
+  padding: 1.2rem 1.4rem;
+  background: rgba(255, 253, 248, .72);
+  border-radius: 0 .9rem .9rem 0;
+  box-shadow: 0 10px 30px rgba(34, 43, 47, .055);
 }
 .boundary,
 .start-line,
@@ -302,8 +342,8 @@ p { color: var(--mut); }
 
 .evidence-card.current { border-color: rgba(20,120,110,.28); }
 .evidence-card.future { border-color: rgba(180,134,53,.28); }
-.evidence-card.current > span { color: var(--teal); }
-.evidence-card.future > span { color: var(--gold2); }
+.evidence-card.current > span { color: var(--state-success); }
+.evidence-card.future > span { color: var(--state-attention); }
 
 .receipt-head, .receipt-foot { border-color: var(--line); }
 .receipt-head span { color: var(--gold2); }
@@ -311,9 +351,9 @@ p { color: var(--mut); }
 .receipt-main dl div { border-color: var(--line); background: rgba(255,255,255,.48); }
 .receipt-main dt { color: #68757c; }
 .receipt-main dd.hash { color: #12636d; }
-.chip.linked { color: var(--teal); }
-.chip.unlinked { color: #647078; }
-.chip.review { color: var(--violet); }
+.chip.linked { color: var(--state-success); }
+.chip.unlinked { color: var(--state-neutral); }
+.chip.review { color: var(--state-review); }
 
 .eco-core {
   border-color: rgba(180,134,53,.38);
@@ -327,8 +367,8 @@ p { color: var(--mut); }
 }
 .ledger-row { border-color: var(--line); }
 .ledger-row.head { background: #e4e7e1; color: var(--ink); }
-.ledger-row .good { color: var(--teal); }
-.ledger-row .warn { color: var(--gold2); }
+.ledger-row .good { color: var(--state-success); }
+.ledger-row .warn { color: var(--state-attention); }
 
 .final-cta {
   border-color: rgba(23,107,117,.22);
@@ -344,6 +384,24 @@ p { color: var(--mut); }
 .footer-grid a, .footer-grid span { color: #5e6b72; }
 .footer-grid a:hover { color: #145f69; }
 .footer-bottom { border-color: var(--line); color: #68747b; }
+
+.cap-num,
+.receipt-main dt,
+.registration-facts dt { color: var(--state-neutral); }
+
+.legal-registration-card {
+  background: linear-gradient(145deg, rgba(255,253,248,.94), rgba(236,231,219,.78));
+  border-color: rgba(180,134,53,.32);
+  box-shadow: var(--shadow-soft);
+}
+
+.registration-facts div {
+  background: rgba(255,255,255,.62);
+  border-color: var(--line);
+}
+
+.registration-facts dd { color: var(--ink); }
+.boundary-note { color: var(--state-neutral) !important; }
 
 .mobile-sticky {
   background: linear-gradient(135deg, #183d43, #176b75);
