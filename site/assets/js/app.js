@@ -2,6 +2,8 @@
 (()=>{
  const q=(s,c=document)=>c.querySelector(s),qa=(s,c=document)=>[...c.querySelectorAll(s)];
  const toggle=q('.nav-toggle'),nav=q('#main-nav');
+ const productCta=q('.hero-actions a[href="#urunler"]');
+ if(productCta) productCta.href='/urunler.html';
  if(toggle&&nav){toggle.addEventListener('click',()=>{const o=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(o));});}
  qa('.nav-group>button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('open')));
  // Sector panel
